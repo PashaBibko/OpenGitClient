@@ -1,0 +1,13 @@
+# IDE files
+.vscode/
+.vs/
+.idea/
+
+# CMake output dirs
+cmake-build-debug/
+cmake-build-release/
+build/
+
+# CSharp binary folders
+bin/
+obj/
