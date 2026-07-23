@@ -1,8 +1,5 @@
-#include "Interop.h"
-
-#include <iostream>
+#include "InteropBindings/OpenGitClientInterop.h"
 
 int main() {
-    std::cout << "Hello World!" << std::endl;
-    std::cout << OpenGitClientInterop_TestAdd(5, 6) << std::endl;
+    OpenGitClientInterop::StartPhotino();
 }

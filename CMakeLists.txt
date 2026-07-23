@@ -38,7 +38,9 @@ add_dependencies(InteropBinary InteropBuildProcess)
 # Creates the C++ executable
 add_executable(OpenGitClient
         backend/main.cpp
-        backend/Interop.h
+        backend/InteropBindings/Functions.h
+        backend/InteropBindings/OpenGitClientInterop.cpp
+        backend/InteropBindings/OpenGitClientInterop.h
 )
 
 target_link_libraries(OpenGitClient PRIVATE InteropBinary)
