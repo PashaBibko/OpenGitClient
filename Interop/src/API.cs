@@ -16,6 +16,11 @@ public static class InteropExports
             return;
         }
 
+        if (name.Contains('[') || name.Contains(']'))
+        {
+            Console.WriteLine("ERROR: Invalid callback name, must not have '[' or ']' in it.");
+        }
+
         AppContext.AppCallbacks.Add(name, () => function());
     }
 
