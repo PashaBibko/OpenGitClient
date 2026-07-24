@@ -20,12 +20,30 @@ else()
     message(FATAL_ERROR "Unsupported platform.")
 endif()
 
+# Dummy file used to force rebuilds
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/_force_rebuild.txt "rebuild")
+message(STATUS "Configured environment.")
+
+# Builds the react-ts frontend
+add_custom_target(ReactBuildProcess ALL
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/web
+        COMMAND npm run build -- --outDir ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/web
+        COMMENT "Building React-TS frontend..."
+        VERBATIM
+)
+
 # Builds the C# binary
-add_custom_target(InteropBuildProcess ALL
+add_custom_command(
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/Interop
         COMMAND dotnet publish -r ${CS_TARGET_OS} -c Release -o ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
         COMMENT "Building Interop C# binary..."
+        OUTPUT ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${INTEROP_BINARY_NAME}
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/_force_rebuild.txt
         VERBATIM
+)
+
+add_custom_target(InteropBuildProcess ALL
+        DEPENDS ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${INTEROP_BINARY_NAME}
 )
 
 # Imports the compiled C# lib so it can be linked into the C++ build
@@ -44,6 +62,7 @@ add_executable(OpenGitClient
 )
 
 target_link_libraries(OpenGitClient PRIVATE InteropBinary)
+add_dependencies(OpenGitClient ReactBuildProcess)
 
 if(APPLE)
     target_link_libraries(OpenGitClient PRIVATE pthread)

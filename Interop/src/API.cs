@@ -12,10 +12,11 @@ public static class InteropExports
         {
             Title = "OpenGitClient",
             UseOsDefaultSize = true,
-            Resizable = true
+            Resizable = true,
+            FileSystemAccessEnabled = true,
         };
         
-        AppContext.Window.Load("https://google.com");
+        AppContext.Window.Load("web/index.html");
         AppContext.Window.WaitForClose(); // Blocks this thread
     }
 }

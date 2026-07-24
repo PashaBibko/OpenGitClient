@@ -11,3 +11,7 @@ build/
 # CSharp binary folders
 bin/
 obj/
+
+# NPM build artifacts
+node_modules/
+dist/
