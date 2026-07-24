@@ -2,12 +2,18 @@
 
 #include <iostream>
 
-static void BasicCallback() {
-    std::cout << "Ran BasicCallback" << std::endl;
+static void BasicCallback(const char* name, const char* serializedVal) {
+
+    if (serializedVal == nullptr) {
+        std::cout << name << std::endl;
+    }
+
+    else {
+        std::cout << name << ": " << serializedVal << std::endl;
+    }
 }
 
 int main() {
-    OpenGitClientInterop::BindCallback("BasicCallback", BasicCallback);
-
+    OpenGitClientInterop::BindMessageReceiverCallback(BasicCallback);
     OpenGitClientInterop::StartPhotino();
 }

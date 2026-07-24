@@ -1,6 +1,6 @@
 #pragma once
 
-using OpenGitClientCallback = void (*)();
+using OpenGitClientMessageReceiverCallback = void(*)(const char*, const char*);
 
 class OpenGitClientInterop {
 public:
@@ -9,6 +9,6 @@ public:
     ~OpenGitClientInterop() = delete;
 
     // Function bindings
-    static void BindCallback(const char* name, OpenGitClientCallback callback);
+    static void BindMessageReceiverCallback(OpenGitClientMessageReceiverCallback callback);
     static void StartPhotino();
 };

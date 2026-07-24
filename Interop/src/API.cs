@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.InteropServices;
 using Photino.NET;
 
@@ -6,22 +5,20 @@ namespace PashaBibko.OpenGitClient;
 
 public static class InteropExports
 {
-    [UnmanagedCallersOnly(EntryPoint = "OpenGitClientInterop_BindCallback")]
-    public static unsafe void BindCallback(byte* callbackName, delegate*<void> function)
+    [UnmanagedCallersOnly(EntryPoint = "OpenGitClientInterop_BindMessageReceiver")]
+    public static unsafe void BindMessageReceiver(delegate* unmanaged[Cdecl]<byte*, byte*, void> function)
     {
-        string name = Marshal.PtrToStringUTF8((IntPtr)callbackName);
-        if (name == null)
+        AppContext.MessageReceivedCallback = (funcName, serializeObject) =>
         {
-            Console.WriteLine("ERROR: Could not marshal callback name.");
-            return;
-        }
+            byte[] funcNameBytes = System.Text.Encoding.UTF8.GetBytes(funcName);
+            byte[] serializedObjectBytes = System.Text.Encoding.UTF8.GetBytes(serializeObject);
 
-        if (name.Contains('[') || name.Contains(']'))
-        {
-            Console.WriteLine("ERROR: Invalid callback name, must not have '[' or ']' in it.");
-        }
-
-        AppContext.AppCallbacks.Add(name, () => function());
+            fixed (byte* pFuncName = funcNameBytes)
+            fixed (byte* pSerializedObject = serializedObjectBytes)
+            {
+                function(pFuncName, pSerializedObject);
+            }
+        };
     }
 
     [UnmanagedCallersOnly(EntryPoint = "OpenGitClientInterop_StartPhotino")]
