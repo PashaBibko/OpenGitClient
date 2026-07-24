@@ -16,7 +16,6 @@ public static class InteropExports
             return;
         }
 
-        function();
         AppContext.AppCallbacks.Add(name, () => function());
     }
 
@@ -31,7 +30,10 @@ public static class InteropExports
             FileSystemAccessEnabled = true
         };
         
-        AppContext.Window.Load("web/index.html");
-        AppContext.Window.WaitForClose(); // Blocks this thread
+        AppContext.Window
+            .Load("web/index.html")
+            .Center()
+            .RegisterWebMessageReceivedHandler(MessageHandler.Handle)
+            .WaitForClose();
     }
 }

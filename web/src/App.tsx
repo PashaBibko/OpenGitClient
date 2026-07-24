@@ -1,3 +1,4 @@
+import {CallBackend} from "./photino.ts";
 
 export function App() {
     return (
@@ -5,6 +6,10 @@ export function App() {
             <h1>
                 Open Git Client
             </h1>
+
+            <button onClick={(): void => CallBackend("BasicCallback")}>
+                Click me
+            </button>
         </div>
     )
 }
