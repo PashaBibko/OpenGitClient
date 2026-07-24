@@ -8,6 +8,7 @@
     <InvariantGlobalization>true</InvariantGlobalization>
     <DebugType>none</DebugType>
     <DebugSymbols>false</DebugSymbols>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
