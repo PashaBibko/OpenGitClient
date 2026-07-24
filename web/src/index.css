@@ -1,1 +1,8 @@
 @import "tailwindcss";
+
+/* Loads before react runs and stops the page flashing white */
+html, body {
+    background: var(--color-neutral-800);
+    min-height: 100vh;
+    margin: 0;
+}

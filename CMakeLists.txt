@@ -20,10 +20,6 @@ else()
     message(FATAL_ERROR "Unsupported platform.")
 endif()
 
-# Dummy file used to force rebuilds
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/_force_rebuild.txt "rebuild")
-message(STATUS "Configured environment.")
-
 # Builds the react-ts frontend
 add_custom_target(ReactBuildProcess ALL
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/web
@@ -33,17 +29,11 @@ add_custom_target(ReactBuildProcess ALL
 )
 
 # Builds the C# binary
-add_custom_command(
+add_custom_target(InteropBuildProcess ALL
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/Interop
         COMMAND dotnet publish -r ${CS_TARGET_OS} -c Release -o ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-        COMMENT "Building Interop C# binary..."
-        OUTPUT ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${INTEROP_BINARY_NAME}
-        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/_force_rebuild.txt
+        COMMENT "Building C# Interop library.."
         VERBATIM
-)
-
-add_custom_target(InteropBuildProcess ALL
-        DEPENDS ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${INTEROP_BINARY_NAME}
 )
 
 # Imports the compiled C# lib so it can be linked into the C++ build

@@ -8,12 +8,12 @@ public static class InteropExports
     [UnmanagedCallersOnly(EntryPoint = "OpenGitClientInterop_StartPhotino")]
     public static void StartPhotino()
     {
-        AppContext.Window = new PhotinoWindow()
+        AppContext.Window = new PhotinoWindow
         {
             Title = "OpenGitClient",
             UseOsDefaultSize = true,
             Resizable = true,
-            FileSystemAccessEnabled = true,
+            FileSystemAccessEnabled = true
         };
         
         AppContext.Window.Load("web/index.html");
