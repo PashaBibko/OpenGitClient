@@ -1,18 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <PublishAot>true</PublishAot>
-    <NativeLib>Shared</NativeLib>
-    <SelfContained>true</SelfContained>
-    <InvariantGlobalization>true</InvariantGlobalization>
-    <DebugType>none</DebugType>
-    <DebugSymbols>false</DebugSymbols>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <PublishAot>true</PublishAot>
+        <NativeLib>Shared</NativeLib>
+        <SelfContained>true</SelfContained>
+        <InvariantGlobalization>true</InvariantGlobalization>
+        <DebugType>none</DebugType>
+        <DebugSymbols>false</DebugSymbols>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Photino.NET" Version="4.0.16" />
-  </ItemGroup>
+    <ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+        <Compile Remove="src/Exports/MacOS.Exports.cs" />
+    </ItemGroup>
 
+    <ItemGroup Condition="'$(RuntimeIdentifier)' == 'osx-arm64' OR '$(RuntimeIdentifier)' == 'osx-x64'">
+        <Compile Remove="src/Exports/Win32.Exports.cs" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Photino.NET" Version="4.0.16" />
+    </ItemGroup>
 </Project>
