@@ -15,3 +15,5 @@ obj/
 # NPM build artifacts
 node_modules/
 dist/
+
+*.tsbuildinfo

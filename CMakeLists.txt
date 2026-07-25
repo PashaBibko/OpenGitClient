@@ -32,7 +32,7 @@ add_custom_target(NodeModulesInstall ALL
 
 add_custom_target(ReactBuildProcess ALL
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/web
-        COMMAND npm run build -- --outDir ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/web
+        COMMAND npm run build -- --outDir ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/web --emptyOutDir
         COMMENT "Building React-TS frontend."
         VERBATIM
 )
