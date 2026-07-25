@@ -4,6 +4,9 @@ project(OpenGitClient LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 20)
 
+include(FetchContent)
+
+# Configures commonly used variables
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # Configures variables for C# build depending on the environment
@@ -88,7 +91,16 @@ endif()
 
 add_dependencies(InteropBinary InteropBuildProcess)
 
-# Creates the C++ executable
+# Imports the C++ dependencies
+FetchContent_Declare(
+        glaze
+        GIT_REPOSITORY https://github.com/stephenberry/glaze.git
+        GIT_TAG v7.9.1
+        GIT_SHALLOW TRUE
+)
+FetchContent_MakeAvailable(Glaze)
+
+# Creates the C++ executable from the project source files
 add_executable(OpenGitClient
         backend/main.cpp
         backend/InteropBindings/Functions.h
@@ -96,10 +108,16 @@ add_executable(OpenGitClient
         backend/InteropBindings/OpenGitClientInterop.h
 )
 
+# Links the C++ executable to the included libraries + the C# interop binary
 target_link_libraries(OpenGitClient PRIVATE InteropBinary)
+target_link_libraries(OpenGitClient PRIVATE glaze::glaze)
+
+# Makes sure that the react frontend is always recompiled even though at the compile time stage it is
+# not directly needed it just avoids pointless errors of using an outdated version of the frontend by accident
 add_dependencies(OpenGitClient ReactBuildProcess)
 
-# O
+# Due to how .dylib works on apple systems it requires additional setup so the
+# final binaries are able to locate each other to access the functions declared in them
 if(APPLE)
     target_link_libraries(OpenGitClient PRIVATE pthread)
     add_custom_command(TARGET InteropBuildProcess POST_BUILD
