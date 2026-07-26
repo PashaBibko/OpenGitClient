@@ -106,6 +106,9 @@ add_executable(OpenGitClient
         backend/InteropBindings/Functions.h
         backend/InteropBindings/OpenGitClientInterop.cpp
         backend/InteropBindings/OpenGitClientInterop.h
+        backend/Router/WebFunction.h
+        backend/Router/WebFunctionRouter.cpp
+        backend/Router/WebFunctionRouter.h
 )
 
 # Links the C++ executable to the included libraries + the C# interop binary
