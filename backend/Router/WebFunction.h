@@ -2,6 +2,8 @@
 
 #include <glaze/glaze.hpp>
 
+#include <iostream>
+
 template <typename Ty>
 concept JsonParsable = std::is_same_v<Ty, void> || requires
 {
@@ -11,26 +13,28 @@ concept JsonParsable = std::is_same_v<Ty, void> || requires
 template <JsonParsable InputTy>
 class WebFunction {
 public:
+    using InputType = InputTy;
+
     virtual void Invoke(const InputTy& object) = 0;
-    virtual ~WebFunction() {}
+    virtual ~WebFunction() = default;
 };
 
 template <>
 class WebFunction<void> {
 public:
-    virtual void Invoke() = 0;
-    virtual ~WebFunction() {}
-};
+    using InputType = void;
 
-//
+    virtual void Invoke() = 0;
+    virtual ~WebFunction() = default;
+};
 
 class WebFunctionContainer {
 public:
     virtual void InvokeInner(const char* json) = 0;
-    virtual ~WebFunctionContainer() {}
+    virtual ~WebFunctionContainer() = default;
 };
 
-template <typename FunctionTy, typename InputTy>
+template <typename FunctionTy, typename InputTy = FunctionTy::InputType>
     requires std::derived_from<FunctionTy, WebFunction<InputTy>>
 class WebFunctionContainerImpl final : public WebFunctionContainer {
     FunctionTy m_InnerFunction{};

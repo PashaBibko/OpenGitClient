@@ -39,8 +39,8 @@ static void BasicCallback(const char* name, const char* serializedVal) {
 }
 
 int main() {
-    router.AddFunction<BasicWebFunction, InputObject>("BasicFunc");
-    router.AddFunction<VoidWebFunction, void>("VoidFunc");
+    router.AddFunction<BasicWebFunction>("BasicFunc");
+    router.AddFunction<VoidWebFunction>("VoidFunc");
 
     OpenGitClientInterop::BindMessageReceiverCallback(BasicCallback);
     OpenGitClientInterop::StartPhotino();
