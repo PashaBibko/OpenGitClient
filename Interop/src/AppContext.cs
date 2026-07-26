@@ -16,7 +16,8 @@ public static class AppContext
             UseOsDefaultSize = true,
             Resizable = true,
             FileSystemAccessEnabled = true,
-            Centered = true
+            Centered = true,
+            LogVerbosity = 0
         };
 
         return Window;

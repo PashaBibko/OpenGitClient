@@ -12,16 +12,19 @@ public static partial class InteropExports
     {
         AppContext.MessageReceivedCallback = (func, obj) =>
         {
-            string serializedOutput = "";
-            
             fixed (byte* funcBytesPtr = TextEncoding.UTF8.GetBytes(func))
             fixed (byte* objBytesPtr = obj == null ? null : TextEncoding.UTF8.GetBytes(obj))
             {
                 byte* outputBytesPtr = function(funcBytesPtr, objBytesPtr);
                 if (outputBytesPtr != null)
                 {
-                    serializedOutput = Marshal.PtrToStringUTF8((IntPtr)outputBytesPtr);
-                    Console.WriteLine($"Received output of [{serializedOutput}]");
+                    string serializedOutput = Marshal.PtrToStringUTF8((IntPtr)outputBytesPtr);
+                    AppContext.Window.SendWebMessage(serializedOutput);
+                }
+
+                else
+                {
+                    AppContext.Window.SendWebMessage("null");
                 }
             }
         };

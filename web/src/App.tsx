@@ -1,4 +1,4 @@
-import {CallBackend} from "./photino.ts";
+import {PhotinoBridge} from "./photino.ts";
 
 export function App() {
     return (
@@ -7,7 +7,13 @@ export function App() {
                 Open Git Client
             </h1>
 
-            <button onClick={(): void => CallBackend("ReturnFunc", { value: 32 })}>
+            <button onClick={(): void => {
+                const returned: Promise<object | null> = PhotinoBridge.CallBackend("ReturnFunc");
+                returned.then((result: object | null): void => {
+                    console.log(result);
+                })
+                console.log(returned);
+            }}>
                 Click me
             </button>
         </div>
