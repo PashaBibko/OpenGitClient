@@ -7,7 +7,7 @@ export function App() {
                 Open Git Client
             </h1>
 
-            <button onClick={(): void => CallBackend("BasicFunc", { value: 32 })}>
+            <button onClick={(): void => CallBackend("ReturnFunc", { value: 32 })}>
                 Click me
             </button>
         </div>

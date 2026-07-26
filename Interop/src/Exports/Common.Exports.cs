@@ -21,9 +21,8 @@ public static partial class InteropExports
                 if (outputBytesPtr != null)
                 {
                     serializedOutput = Marshal.PtrToStringUTF8((IntPtr)outputBytesPtr);
+                    Console.WriteLine($"Received output of [{serializedOutput}]");
                 }
-                
-                Console.WriteLine($"Received output of [{serializedOutput}]");
             }
         };
     }
