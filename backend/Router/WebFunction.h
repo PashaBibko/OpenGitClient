@@ -38,14 +38,24 @@ public:
     void InvokeInner(const char* json) override {
         // Does not require any JSON conversion if it takes in void
         if constexpr (std::is_void_v<InputTy>) {
-            m_InnerFunction.Invoke();
-        }
+            // Sends a warning if an object was provided
+            if (json != nullptr) {
+                std::cout << "WARNING: Input parameter was provided to a void web function." << std::endl;
+            }
 
-        // Else has to conver the string to the object
-        else {
+            m_InnerFunction.Invoke();
+        } else {
+            // Checks there is an input object provided
+            if (json == nullptr) {
+                std::cout << "ERROR: No input parameter was provided to a web function." << std::endl;
+                return;
+            }
+
+            // Constructs the object from the JSON
             InputTy object{};
-            if (glz::error_ctx ec = glz::read_json(object, json)) {
-                throw std::runtime_error("Error reading json.");
+            if (const glz::error_ctx ec = glz::read_json(object, json)) {
+                std::cout << "ERROR: " << "Failed to parse json due to [" << glz::format_error(ec) << "]" << std::endl;
+                return;
             }
             m_InnerFunction.Invoke(object);
         }
