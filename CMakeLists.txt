@@ -10,7 +10,6 @@ include(FetchContent)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # Checks for compile time dependencies (npm and dotnet)
-
 find_program(NPM_EXECUTABLE npm)
 if(NOT NPM_EXECUTABLE)
     message(FATAL_ERROR "npm could not be found, make sure Node.js/npm is installed.")
@@ -113,6 +112,16 @@ FetchContent_Declare(
         GIT_SHALLOW TRUE
 )
 FetchContent_MakeAvailable(Glaze)
+
+set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(BUILD_CLAR OFF CACHE BOOL "" FORCE)
+FetchContent_Declare(
+        cppgit2
+        GIT_REPOSITORY https://github.com/p-ranav/cppgit2.git
+        GIT_TAG        master
+        GIT_SUBMODULES_RECURSE TRUE
+)
+FetchContent_MakeAvailable(cppgit2)
 
 # Creates the C++ executable from the project source files
 add_executable(OpenGitClient
