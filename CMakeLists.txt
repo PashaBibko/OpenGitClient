@@ -9,6 +9,20 @@ include(FetchContent)
 # Configures commonly used variables
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+# Checks for compile time dependencies (npm and dotnet)
+
+find_program(NPM_EXECUTABLE npm)
+if(NOT NPM_EXECUTABLE)
+    message(FATAL_ERROR "npm could not be found, make sure Node.js/npm is installed.")
+endif()
+message(STATUS "Found npm: ${NPM_EXECUTABLE}")
+
+find_program(DOTNET_EXECUTABLE dotnet)
+if(NOT DOTNET_EXECUTABLE)
+    message(FATAL_ERROR "dotnet could not be found, make sure .NET SDK 8.0+ is installed.")
+endif()
+message(STATUS "Found dotnet: ${DOTNET_EXECUTABLE}")
+
 # Configures variables for C# build depending on the environment
 if(WIN32)
     set(CS_TARGET_OS "win-x64")
