@@ -34,8 +34,10 @@ public:
     }
 };
 
-static void BasicCallback(const char* name, const char* serializedVal) {
-    router.InvokeFunction(name, serializedVal);
+static char* BasicCallback(const char *name, const char *serializedVal) {
+    const std::string result = router.InvokeFunction(name, serializedVal);
+
+    return nullptr;
 }
 
 int main() {

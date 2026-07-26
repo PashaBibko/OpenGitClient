@@ -1,6 +1,6 @@
 #pragma once
 
-using OpenGitClientMessageReceiverCallback = void(*)(const char*, const char*);
+using OpenGitClientMessageReceiverCallback = char*(*)(const char*, const char*);
 
 class OpenGitClientInterop {
 public:
