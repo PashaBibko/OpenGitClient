@@ -1,11 +1,10 @@
 import {PhotinoBridge} from "./photino.ts";
+import {TopBar} from "./components/TopBar.tsx";
 
 export function App() {
     return (
-        <div className="bg-neutral-800 min-h-screen">
-            <h1>
-                Open Git Client
-            </h1>
+        <div className="bg-neutral-800 h-screen flex flex-col w-screen">
+            <TopBar />
 
             <button onClick={(): void => {
                 const returned: Promise<object | null> = PhotinoBridge.CallBackend("ReturnFunc");
