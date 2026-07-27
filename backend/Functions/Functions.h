@@ -5,8 +5,8 @@
 #include "../Router/WebFunction.h"
 
 namespace RepoLocation {
-    class Choose : public WebFunction<void, std::string> {
+    class Choose : public WebFunction<int, void, std::string> {
     public:
-        std::string Invoke() override;
+        std::string Invoke(int& ctx) override;
     };
 } // namespace RepoLocation

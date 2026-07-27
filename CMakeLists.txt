@@ -143,7 +143,6 @@ add_executable(OpenGitClient
         backend/InteropBindings/OpenGitClientInterop.cpp
         backend/InteropBindings/OpenGitClientInterop.h
         backend/Router/WebFunction.h
-        backend/Router/WebFunctionRouter.cpp
         backend/Router/WebFunctionRouter.h
         backend/Functions/functions.h
         backend/Functions/RepoLocation.cpp

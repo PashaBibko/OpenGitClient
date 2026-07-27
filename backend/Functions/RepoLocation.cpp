@@ -4,7 +4,11 @@
 
 #include <nfd.h>
 
-std::string RepoLocation::Choose::Invoke() {
+std::string RepoLocation::Choose::Invoke(int& ctx) {
+    //
+    ctx++;
+    std::cout << "Counter: " << ctx << "\n";
+
     // Initializes NFD so it can open a native file explorer window
     std::string result = "";
     if (NFD_Init() != NFD_OKAY) {
