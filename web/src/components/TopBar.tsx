@@ -23,7 +23,11 @@ export function TopBar() {
                 className="bg-neutral-600 border-2 rounded-md border-neutral-950 px-2 text-md text-gray-200"
                 onClick={() => {
                     PhotinoBridge.CallBackend("RepoLocation.Choose").then((res: any) => {
-                        setRepoLocation(res as string);
+                        if (res !== "") {
+                            setRepoLocation(res as string);
+                        } else {
+                            setRepoLocation(null);
+                        }
                     })
                 }}
             >
