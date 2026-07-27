@@ -87,7 +87,8 @@ else()
 endif()
 
 # Imports the compiled C# lib so it can be linked into the C++ build
-add_library(InteropBinary SHARED IMPORTED)
+add_library(InteropBinary SHARED IMPORTED
+        backend/Functions/RepoLocation.cpp)
 if(WIN32)
     set_target_properties(InteropBinary PROPERTIES
             IMPORTED_LOCATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${INTEROP_WINDOWS_DLL}
@@ -144,6 +145,8 @@ add_executable(OpenGitClient
         backend/Router/WebFunction.h
         backend/Router/WebFunctionRouter.cpp
         backend/Router/WebFunctionRouter.h
+        backend/Functions/functions.h
+        backend/Functions/RepoLocation.cpp
 )
 
 # Links the C++ executable to the included libraries + the C# interop binary

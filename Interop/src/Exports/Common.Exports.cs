@@ -19,12 +19,15 @@ public static partial class InteropExports
                 if (outputBytesPtr != null)
                 {
                     string serializedOutput = Marshal.PtrToStringUTF8((IntPtr)outputBytesPtr);
+
+                    Console.WriteLine($"Sent: [{serializedOutput}]");
                     AppContext.Window.SendWebMessage(serializedOutput);
                 }
 
                 else
                 {
                     AppContext.Window.SendWebMessage("null");
+                    Console.WriteLine("Sent: [null]");
                 }
             }
         };

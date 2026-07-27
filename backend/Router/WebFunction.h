@@ -5,10 +5,8 @@
 #include <iostream>
 
 template <typename Ty>
-concept JsonSupported = std::is_same_v<Ty, void> || requires
-{
-    glz::meta<Ty>::value;
-};
+concept JsonSupported = std::is_same_v<Ty, void> ||
+    (glz::write_supported<Ty, glz::JSON> && glz::read_supported<Ty, glz::JSON>);
 
 template <JsonSupported InputTy, JsonSupported OutputTy = void>
 struct WebFunction {

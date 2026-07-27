@@ -32,20 +32,20 @@ export class PhotinoBridge {
         });
     }
 
-    public static CallBackend(funcName: string, params: object | null = null): Promise<object | null> {
+    public static CallBackend(funcName: string, params: object | null = null): Promise<any> {
         let message: string = funcName;
         if (params !== null) {
             message += '|' + JSON.stringify(params);
         }
 
-        const result: Promise<object | null> = this.queue.then(() => this.SendAndWait(message));
+        const result: Promise<any> = this.queue.then(() => this.SendAndWait(message));
         this.queue = result.then((): undefined => undefined, (): undefined => undefined);
 
         return result;
     }
 
-    private static SendAndWait(message: string): Promise<object | null> {
-        return new Promise<object | null>((resolve, reject) => {
+    private static SendAndWait(message: string): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
             this.pendingResolve = (response: string) => {
                 try {
                     resolve(this.ParseResponse(response));
