@@ -6,9 +6,6 @@ set(CMAKE_CXX_STANDARD 20)
 
 include(FetchContent)
 
-# Configures commonly used variables
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
 # Checks for compile time dependencies (npm and dotnet)
 find_program(NPM_EXECUTABLE npm)
 if(NOT NPM_EXECUTABLE)
@@ -21,6 +18,12 @@ if(NOT DOTNET_EXECUTABLE)
     message(FATAL_ERROR "dotnet could not be found, make sure .NET SDK 8.0+ is installed.")
 endif()
 message(STATUS "Found dotnet: ${DOTNET_EXECUTABLE}")
+
+# Configures the environment
+if (WIN32)
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+endif()
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # Configures variables for C# build depending on the environment
 if(WIN32)
@@ -114,25 +117,27 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(Glaze)
 
-# Disables cppgit2 from fetching libgit2 from the users system as it may be a newer version
-# and cppgit2 does not work with all newer versions and can cause the program to not compile
-set(CMAKE_DISABLE_FIND_PACKAGE_PkgConfig ON)
-set(CMAKE_DISABLE_FIND_PACKAGE_libgit2 ON)
-
-set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(BUILD_CLAR OFF CACHE BOOL "" FORCE)
+set(STATIC_CRT OFF CACHE BOOL "" FORCE)
 FetchContent_Declare(
-        cppgit2
-        GIT_REPOSITORY https://github.com/p-ranav/cppgit2.git
-        GIT_TAG        master
-        GIT_SUBMODULES_RECURSE TRUE
+        libgit2
+        GIT_REPOSITORY https://github.com/libgit2/libgit2.git
+        GIT_TAG        v1.9.6
+        GIT_SHALLOW    TRUE
 )
-FetchContent_MakeAvailable(cppgit2)
+
+# Trims part of libgit's build process to speed it up
+set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(BUILD_CLI OFF CACHE BOOL "" FORCE)
+set(USE_SSH OFF CACHE BOOL "" FORCE)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+
+FetchContent_MakeAvailable(libgit2)
 
 FetchContent_Declare(
         nfd
         GIT_REPOSITORY https://github.com/btzy/nativefiledialog-extended.git
         GIT_TAG        v1.3.0
+        GIT_SHALLOW    TRUE
 )
 FetchContent_MakeAvailable(nfd)
 
@@ -151,8 +156,10 @@ add_executable(OpenGitClient
 # Links the C++ executable to the included libraries + the C# interop binary
 target_link_libraries(OpenGitClient PRIVATE InteropBinary)
 target_link_libraries(OpenGitClient PRIVATE glaze::glaze)
-target_link_libraries(OpenGitClient PRIVATE cppgit2)
+target_link_libraries(OpenGitClient PRIVATE libgit2package)
 target_link_libraries(OpenGitClient PRIVATE nfd)
+
+target_include_directories(OpenGitClient PRIVATE ${libgit2_SOURCE_DIR}/include)
 
 # Makes sure that the react frontend is always recompiled even though at the compile time stage it is
 # not directly needed it just avoids pointless errors of using an outdated version of the frontend by accident

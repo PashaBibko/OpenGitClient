@@ -11,8 +11,6 @@ External required dependencies (all must be available in the system path)
 - .NET SDK v8 (or higher)
 - Node.js / npm
 
-- Ninja is recommended but is not required.
-
 ```shell
 # Downloads the project, unneeded if downloaded manually
 git clone https://github.com/PashaBibko/OpenGitClient.git open-git-client
@@ -34,7 +32,7 @@ cmake --build .
 | **TailwindCSS**    | CSS styling for the frontend                 |
 | **Photino.NET**    | Handles the window and webpage display       |
 | **Glaze**          | JSON read/write for C++                      |
-| **CppGit2**        | Git interaction for C++                      |
+| **libgit2**        | Git interaction for C/C++                    |
 | **nfd**            | Opens native file explorer for C++           |
 
 ### Linux Support

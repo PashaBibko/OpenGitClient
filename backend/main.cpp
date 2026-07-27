@@ -5,13 +5,18 @@
 
 #include "Functions/Functions.h"
 
+#include <git2.h>
+
 #include <iostream>
 
 int main() {
-    static WebFunctionRouter<int> router; // Has to be static to be passed into the callback
+    git_libgit2_init();
 
+    // Sets up the web function router so the messages from the frontend call the correct functions
+    static WebFunctionRouter<int> router; // Has to be static to be passed into the callback
     router.AddFunction<RepoLocation::Choose>("RepoLocation.Choose");
 
+    // Starts photino.net with a message receiver to forward to the web function router
     OpenGitClientInterop::BindMessageReceiverCallback(
         [](const char* name, const char* serializedVal) -> char* {
             const std::optional result = router.InvokeFunction(name, serializedVal);
@@ -29,5 +34,8 @@ int main() {
 
             return buffer;
         });
-    OpenGitClientInterop::StartPhotino();
+    OpenGitClientInterop::StartPhotino(); // Blocks until window is closed
+
+    //
+    git_libgit2_shutdown();
 }
