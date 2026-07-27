@@ -113,6 +113,11 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(Glaze)
 
+# Disables cppgit2 from fetching libgit2 from the users system as it may be a newer version
+# and cppgit2 does not work with all newer versions and can cause the program to not compile
+set(CMAKE_DISABLE_FIND_PACKAGE_PkgConfig ON)
+set(CMAKE_DISABLE_FIND_PACKAGE_libgit2 ON)
+
 set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(BUILD_CLAR OFF CACHE BOOL "" FORCE)
 FetchContent_Declare(
@@ -122,6 +127,13 @@ FetchContent_Declare(
         GIT_SUBMODULES_RECURSE TRUE
 )
 FetchContent_MakeAvailable(cppgit2)
+
+FetchContent_Declare(
+        nfd
+        GIT_REPOSITORY https://github.com/btzy/nativefiledialog-extended.git
+        GIT_TAG        v1.3.0
+)
+FetchContent_MakeAvailable(nfd)
 
 # Creates the C++ executable from the project source files
 add_executable(OpenGitClient
@@ -137,6 +149,8 @@ add_executable(OpenGitClient
 # Links the C++ executable to the included libraries + the C# interop binary
 target_link_libraries(OpenGitClient PRIVATE InteropBinary)
 target_link_libraries(OpenGitClient PRIVATE glaze::glaze)
+target_link_libraries(OpenGitClient PRIVATE cppgit2)
+target_link_libraries(OpenGitClient PRIVATE nfd)
 
 # Makes sure that the react frontend is always recompiled even though at the compile time stage it is
 # not directly needed it just avoids pointless errors of using an outdated version of the frontend by accident

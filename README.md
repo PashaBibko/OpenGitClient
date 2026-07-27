@@ -1,6 +1,6 @@
 ﻿# Open Git Client
 
-A small and simple open source git client, designed for basic git operations. Works natively on Windows and MacOS
+A small and simple open source git client, designed for basic git operations. Works natively on Windows and macOS
 ([not Linux](#linux-support)). Built with C++, C# and TypeScript using a primarily CMake build system.
 
 ### Build
@@ -35,6 +35,7 @@ cmake --build .
 | **Photino.NET**    | Handles the window and webpage display       |
 | **Glaze**          | JSON read/write for C++                      |
 | **CppGit2**        | Git interaction for C++                      |
+| **nfd**            | Opens native file explorer for C++           |
 
 ### Linux Support
 Linux is not directly supported for this project, for a couple of reasons. The main one is that I have designed it for
@@ -43,5 +44,5 @@ out linux support, so if you wish to implement it feel free too.
 
 ### License
 All code in this project is licensed under the [MIT License](LICENSE), please do modify and distribute it as much as
-you can. This project was primarily made because I was fed up of different git clients requiring subscriptions to work
+you can. This project was primarily made because I was fed up with different git clients requiring subscriptions to work
 on private repositories.
