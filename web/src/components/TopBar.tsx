@@ -27,7 +27,7 @@ export function TopBar() {
             <button
                 className="bg-neutral-600 border-2 rounded-md border-neutral-950 px-2 text-md text-gray-200"
                 onClick={() => {
-                    PhotinoBridge.CallBackend("RepoLocation.Choose").then((res: any) => {
+                    PhotinoBridge.CallBackend("Repo.Choose").then((res: any) => {
                         const result = res as RepoLocationChooseResult;
                         console.log(result);
 

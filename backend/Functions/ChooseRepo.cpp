@@ -31,7 +31,7 @@ static std::optional<std::string> GetUserChosenPath() {
     return chosenPath;
 }
 
-static RepoLocation::ChooseResult TryDiscoverRepositoryAt(const std::string& path, AppContext& ctx) {
+static Repo::ChooseResult TryDiscoverRepositoryAt(const std::string& path, AppContext& ctx) {
     // Frees/Destroys the old repository (if there was one)
     if (ctx.m_SelectedRepo != nullptr) {
         git_repository_free(ctx.m_SelectedRepo);
@@ -57,7 +57,7 @@ static RepoLocation::ChooseResult TryDiscoverRepositoryAt(const std::string& pat
     return {.SelectedPath = repoLocation, .HasGitRepository = true};
 }
 
-RepoLocation::ChooseResult RepoLocation::Choose::Invoke(AppContext& ctx) {
+Repo::ChooseResult Repo::Choose::Invoke(AppContext& ctx) {
     // Gets the folder path chosen by the user
     const std::optional chosenPath = GetUserChosenPath();
     if (chosenPath == std::nullopt) {

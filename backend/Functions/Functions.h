@@ -5,7 +5,7 @@
 #include "../Router/WebFunction.h"
 #include "../AppContext.h"
 
-namespace RepoLocation {
+namespace Repo {
     struct ChooseResult {
         std::string SelectedPath;
         bool HasGitRepository;
@@ -15,4 +15,4 @@ namespace RepoLocation {
     public:
         ChooseResult Invoke(AppContext& ctx) override;
     };
-} // namespace RepoLocation
+} // namespace Repo
