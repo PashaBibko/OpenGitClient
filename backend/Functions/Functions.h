@@ -11,8 +11,20 @@ namespace Repo {
         bool HasGitRepository;
     };
 
-    class Choose : public WebFunction<AppContext, void, ChooseResult> {
+    class Choose final : public WebFunction<AppContext, void, ChooseResult> {
     public:
         ChooseResult Invoke(AppContext& ctx) override;
+    };
+
+    struct FileStatusBreakdown {
+        std::string FileLocation;
+        std::string SpecialState;
+        std::string StagedState;
+        std::string UnstagedState;
+    };
+
+    class GetChanges final : public WebFunction<AppContext, void, std::vector<FileStatusBreakdown>> {
+    public:
+        std::vector<FileStatusBreakdown> Invoke(AppContext& ctx) override;
     };
 } // namespace Repo

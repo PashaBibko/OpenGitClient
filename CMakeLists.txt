@@ -155,6 +155,7 @@ add_executable(OpenGitClient
         backend/Functions/functions.h
         backend/Functions/ChooseRepo.cpp
         backend/AppContext.h
+        backend/Functions/GetRepoChanges.cpp
 )
 
 # Links the C++ executable to the included libraries + the C# interop binary

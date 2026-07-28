@@ -40,7 +40,7 @@ static Repo::ChooseResult TryDiscoverRepositoryAt(const std::string& path, AppCo
 
     // Discovers the repository by looking back directories until it finds one with a .git folder
     git_buf repoPath = {.ptr = nullptr};
-    if (const int ec = git_repository_discover(&repoPath, path.c_str(), 0, nullptr); ec < 0) {
+    if (git_repository_discover(&repoPath, path.c_str(), 0, nullptr) < 0) {
         const git_error* err = git_error_last();
         std::cout << "No repo found: " << (err ? err->message : "unknown error") << "\n";
 

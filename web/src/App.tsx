@@ -7,11 +7,10 @@ export function App() {
             <TopBar />
 
             <button onClick={(): void => {
-                const returned: Promise<object | null> = PhotinoBridge.CallBackend("ReturnFunc");
+                const returned: Promise<object | null> = PhotinoBridge.CallBackend("Repo.GetChanges");
                 returned.then((result: object | null): void => {
                     console.log(result);
                 })
-                console.log(returned);
             }}>
                 Click me
             </button>

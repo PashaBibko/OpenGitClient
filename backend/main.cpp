@@ -10,6 +10,7 @@ int main() {
     // Sets up the web function router so the messages from the frontend call the correct functions
     static WebFunctionRouter<AppContext> router; // Has to be static to be passed into the callback
     router.AddFunction<Repo::Choose>("Repo.Choose");
+    router.AddFunction<Repo::GetChanges>("Repo.GetChanges");
 
     // Starts photino.net with a message receiver to forward to the web function router
     OpenGitClientInterop::BindMessageReceiverCallback(

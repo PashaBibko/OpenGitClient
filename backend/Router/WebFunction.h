@@ -8,7 +8,7 @@ template <typename Ty>
 concept JsonSupported = std::is_same_v<Ty, void> ||
     (glz::write_supported<Ty, glz::JSON> && glz::read_supported<Ty, glz::JSON>);
 
-template <typename AppContextTy, JsonSupported InputTy, JsonSupported OutputTy = void>
+template <typename AppContextTy, JsonSupported InputTy, JsonSupported OutputTy>
 struct WebFunction {
     using InputType = InputTy;
     using OutputType = OutputTy;
