@@ -3,10 +3,16 @@
 #include <string>
 
 #include "../Router/WebFunction.h"
+#include "../AppContext.h"
 
 namespace RepoLocation {
-    class Choose : public WebFunction<int, void, std::string> {
+    struct ChooseResult {
+        std::string SelectedPath;
+        bool HasGitRepository;
+    };
+
+    class Choose : public WebFunction<AppContext, void, ChooseResult> {
     public:
-        std::string Invoke(int& ctx) override;
+        ChooseResult Invoke(AppContext& ctx) override;
     };
 } // namespace RepoLocation

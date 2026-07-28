@@ -9,6 +9,11 @@ function FormatRepoLocation(location: string | null): string {
         return location;
 }
 
+interface RepoLocationChooseResult {
+    HasGitRepository: boolean,
+    SelectedPath: string,
+}
+
 export function TopBar() {
     const [ repoLocation, setRepoLocation ] = useState<string | null>(null);
 
@@ -23,11 +28,10 @@ export function TopBar() {
                 className="bg-neutral-600 border-2 rounded-md border-neutral-950 px-2 text-md text-gray-200"
                 onClick={() => {
                     PhotinoBridge.CallBackend("RepoLocation.Choose").then((res: any) => {
-                        if (res !== "") {
-                            setRepoLocation(res as string);
-                        } else {
-                            setRepoLocation(null);
-                        }
+                        const result = res as RepoLocationChooseResult;
+                        console.log(result);
+
+                        setRepoLocation(result.SelectedPath);
                     })
                 }}
             >

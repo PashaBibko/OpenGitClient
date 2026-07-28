@@ -4,24 +4,22 @@
 
 #include <nfd.h>
 
-std::string RepoLocation::Choose::Invoke(int& ctx) {
-    //
-    ctx++;
-    std::cout << "Counter: " << ctx << "\n";
-
+static std::optional<std::string> GetUserChosenPath() {
     // Initializes NFD so it can open a native file explorer window
-    std::string result = "";
     if (NFD_Init() != NFD_OKAY) {
         std::cout << "ERROR: NFD_Init() failed [" << NFD_GetError() << "\n";
-        return result;
+        return std::nullopt;
     }
 
     // Opens the window and gets the user to select a folder
     nfdchar_t* outPath = nullptr;
+    std::string chosenPath;
+
     if (const nfdresult_t rc = NFD_PickFolder(&outPath, nullptr); rc == NFD_OKAY) { // nullptr = no default location
-        result = outPath;
+        chosenPath = outPath;
     } else if (rc != NFD_CANCEL) { // Doesn't class user canceling as failing
         std::cout << "ERROR: NFD_PickFolder() failed [" << NFD_GetError() << "]\n";
+        return std::nullopt;
     }
 
     // Cleans up all allocated resources before returning
@@ -30,5 +28,43 @@ std::string RepoLocation::Choose::Invoke(int& ctx) {
         outPath = nullptr;
     }
     NFD_Quit();
-    return result;
+    return chosenPath;
+}
+
+static RepoLocation::ChooseResult TryDiscoverRepositoryAt(const std::string& path, AppContext& ctx) {
+    // Frees/Destroys the old repository (if there was one)
+    if (ctx.m_SelectedRepo != nullptr) {
+        git_repository_free(ctx.m_SelectedRepo);
+        ctx.m_SelectedRepo = nullptr;
+    }
+
+    // Discovers the repository by looking back directories until it finds one with a .git folder
+    git_buf repoPath = {.ptr = nullptr};
+    if (const int ec = git_repository_discover(&repoPath, path.c_str(), 0, nullptr); ec < 0) {
+        const git_error* err = git_error_last();
+        std::cout << "No repo found: " << (err ? err->message : "unknown error") << "\n";
+
+        git_buf_dispose(&repoPath);
+        return {.SelectedPath = path, .HasGitRepository = false};
+    }
+
+    // Opens the repository with the discovered path
+    git_repository_open(&ctx.m_SelectedRepo, repoPath.ptr);
+    const std::string repoLocation = repoPath.ptr;
+
+    git_buf_dispose(&repoPath);
+
+    return {.SelectedPath = repoLocation, .HasGitRepository = true};
+}
+
+RepoLocation::ChooseResult RepoLocation::Choose::Invoke(AppContext& ctx) {
+    // Gets the folder path chosen by the user
+    const std::optional chosenPath = GetUserChosenPath();
+    if (chosenPath == std::nullopt) {
+        // Default result, TODO: Add support for std::optional return values from web functions
+        return {.SelectedPath = "", .HasGitRepository = false};
+    }
+
+    // Tries to open the git repository at the chosen location
+    return TryDiscoverRepositoryAt(chosenPath.value(), ctx);
 }

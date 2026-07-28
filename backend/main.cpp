@@ -1,19 +1,14 @@
 #include "InteropBindings/OpenGitClientInterop.h"
-
 #include "Router/WebFunctionRouter.h"
 #include "Router/WebFunction.h"
-
 #include "Functions/Functions.h"
-
-#include <git2.h>
-
-#include <iostream>
+#include "AppContext.h"
 
 int main() {
     git_libgit2_init();
 
     // Sets up the web function router so the messages from the frontend call the correct functions
-    static WebFunctionRouter<int> router; // Has to be static to be passed into the callback
+    static WebFunctionRouter<AppContext> router; // Has to be static to be passed into the callback
     router.AddFunction<RepoLocation::Choose>("RepoLocation.Choose");
 
     // Starts photino.net with a message receiver to forward to the web function router
