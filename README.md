@@ -3,6 +3,19 @@
 A small and simple open source git client, designed for basic git operations. Works natively on Windows and macOS
 ([not Linux](#linux-support)). Built with C++, C# and TypeScript using a primarily CMake build system.
 
+### Libraries used
+
+| Library            | Purpose                                      |
+|--------------------|----------------------------------------------|
+| **Vite**           | Web bundler                                  |
+| **ViteSingleFile** | Helps Photino.NET easily display the webpage |
+| **TailwindCSS**    | CSS styling for the frontend                 |
+| **Photino.NET**    | Handles the window and webpage display       |
+| **Glaze**          | JSON read/write for C++                      |
+| **libgit2**        | Git interaction for C/C++                    |
+| **nfd**            | Opens native file explorer for C++           |
+| **zustand**        | Handles react app global context             |
+
 ### Build
 
 External required dependencies (all must be available in the system path)
@@ -23,18 +36,23 @@ cmake .. # Add -G Ninja if available
 cmake --build .
 ```
 
-### Libraries used
+### Frontend only build
 
-| Library            | Purpose                                      |
-|--------------------|----------------------------------------------|
-| **Vite**           | Web bundler                                  |
-| **ViteSingleFile** | Helps Photino.NET easily display the webpage |
-| **TailwindCSS**    | CSS styling for the frontend                 |
-| **Photino.NET**    | Handles the window and webpage display       |
-| **Glaze**          | JSON read/write for C++                      |
-| **libgit2**        | Git interaction for C/C++                    |
-| **nfd**            | Opens native file explorer for C++           |
-| **zustand**        | Handles react app global context             |
+If you are working on the frontend web UI project (anything under web/), there is a script to avoid recompiling the
+entire project. In order for the script to run properly it does require that the main project has already been built.
+It will check for the build in the below directories in the given order, if you have an outdated backend build in any
+of the folders either delete or update it in order to not have conflicting versions.
+- build
+- cmake-build-debug
+- cmake-build-release
+- cmake-build
+
+To run the frontend only build run either of the commands below in the web/ directory:
+```shell
+npm run dev
+# or
+node scripts/quickload.js
+```
 
 ### Linux Support
 Linux is not directly supported for this project, for a couple of reasons. The main one is that I have designed it for
