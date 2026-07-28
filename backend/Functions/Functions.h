@@ -7,8 +7,8 @@
 
 namespace Repo {
     struct ChooseResult {
-        std::string SelectedPath;
-        bool HasGitRepository;
+        std::string Filepath;
+        bool IsRepository;
     };
 
     class Choose final : public WebFunction<AppContext, void, ChooseResult> {

@@ -1,38 +1,31 @@
-﻿import {useState} from 'react';
+﻿import {useAppState, WorkingDir} from "../AppState.ts";
 import {PhotinoBridge} from "../photino.ts";
 
-function FormatRepoLocation(location: string | null): string {
-    if (location === null)
+function FormatRepoLocation(workingDir: WorkingDir | null): string {
+    if (workingDir === null)
         return "None selected";
 
     else
-        return location;
-}
-
-interface RepoLocationChooseResult {
-    HasGitRepository: boolean,
-    SelectedPath: string,
+        return workingDir.Filepath;
 }
 
 export function TopBar() {
-    const [ repoLocation, setRepoLocation ] = useState<string | null>(null);
+    const setWorkingDirectory = useAppState((state) => state.setWorkingDir);
+    const workingDir = useAppState((state) => state.CurrentWorkingDir);
 
     return (
         <div className="w-screen border-b-4 border-neutral-950 flex px-4 py-4 h-16 gap-4 text-gray-200 text-md">
             Current repo:
             <div className="text-gray-200 border-2 rounded-md border-neutral-950 px-2">
-                {FormatRepoLocation(repoLocation)}
+                {FormatRepoLocation(workingDir)}
             </div>
 
             <button
                 className="bg-neutral-600 border-2 rounded-md border-neutral-950 px-2 text-md text-gray-200"
                 onClick={() => {
-                    PhotinoBridge.CallBackend("Repo.Choose").then((res: any) => {
-                        const result = res as RepoLocationChooseResult;
-                        console.log(result);
-
-                        setRepoLocation(result.SelectedPath);
-                    })
+                    PhotinoBridge.CallBackend("Repo.Choose").then(
+                        (res: any) => setWorkingDirectory(res)
+                    )
                 }}
             >
                 Change

@@ -45,7 +45,7 @@ static Repo::ChooseResult TryDiscoverRepositoryAt(const std::string& path, AppCo
         std::cout << "No repo found: " << (err ? err->message : "unknown error") << "\n";
 
         git_buf_dispose(&repoPath);
-        return {.SelectedPath = path, .HasGitRepository = false};
+        return {.Filepath = path, .IsRepository = false};
     }
 
     // Opens the repository with the discovered path
@@ -54,7 +54,7 @@ static Repo::ChooseResult TryDiscoverRepositoryAt(const std::string& path, AppCo
 
     git_buf_dispose(&repoPath);
 
-    return {.SelectedPath = repoLocation, .HasGitRepository = true};
+    return {.Filepath = repoLocation, .IsRepository = true};
 }
 
 Repo::ChooseResult Repo::Choose::Invoke(AppContext& ctx) {
@@ -62,7 +62,7 @@ Repo::ChooseResult Repo::Choose::Invoke(AppContext& ctx) {
     const std::optional chosenPath = GetUserChosenPath();
     if (chosenPath == std::nullopt) {
         // Default result, TODO: Add support for std::optional return values from web functions
-        return {.SelectedPath = "", .HasGitRepository = false};
+        return {.Filepath = "", .IsRepository = false};
     }
 
     // Tries to open the git repository at the chosen location
