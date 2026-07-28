@@ -34,6 +34,7 @@ cmake --build .
 | **Glaze**          | JSON read/write for C++                      |
 | **libgit2**        | Git interaction for C/C++                    |
 | **nfd**            | Opens native file explorer for C++           |
+| **zustand**        | Handles react app global context             |
 
 ### Linux Support
 Linux is not directly supported for this project, for a couple of reasons. The main one is that I have designed it for
