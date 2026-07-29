@@ -1,8 +1,10 @@
-import {useAppState} from "../AppState.ts";
+import {FilePreview} from "./FilePreview.tsx";
 import {PhotinoBridge} from "../photino.ts";
+import {useAppState} from "../AppState.ts";
+import {SideBar} from "./SideBar.tsx";
 
 import {useState, useEffect} from "react";
-import {SideBar} from "./SideBar.tsx";
+import {PickRepoButton} from "./TopBar.tsx";
 
 export interface FileStatusBreakdown {
     FileLocation: string;
@@ -33,13 +35,32 @@ export function MainContent() {
         }
     }, [workingDir?.Filepath, workingDir?.IsRepository])
 
-    // Gets the working dir and checks if it is a repository and displays relevant screen if it isn't
-    if (workingDir === null || !workingDir.IsRepository) {
+    // When opening workingDir will be null so we have a special page
+    if (workingDir === null) {
         return (
-            <div className="flex flex-1 text-gray-200 text-2xl justify-center text-center h-max items-center">
+            <div className="flex flex-1 justify-center text-center h-max items-center">
+                <div className="flex flex-col">
+                    <div className="text-gray-200 text-4xl">
+                        Welcome to Open Git Client
+                    </div>
+
+                    <br/>
+
+                    <div>
+                        <PickRepoButton prompt={"Choose a directory"}/>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    // Gets the working dir and checks if it is a repository and displays relevant screen if it isn't
+    if (!workingDir.IsRepository) {
+        return (
+            <div className="flex flex-1 justify-center text-center h-max items-center">
                 <div className="flex flex-col">
                     <div className="text-gray-200 text-3xl">
-                        This directory does not contain a git repository.
+                        This directory does not appear to contain a git repository.
                     </div>
 
                     <div className="text-gray-400 text-xl">
@@ -58,12 +79,12 @@ export function MainContent() {
 
     return (
         <div className="flex flex-1 h-max">
-            <aside className="bg-green-500 w-96 shrink-0">
+            <aside className="flex shrink-0 w-96">
                 <SideBar fileChanges={fileChanges}/>
             </aside>
 
-            <aside className="bg-yellow-800 flex-1 p-4">
-                Main Content
+            <aside className="flex-1 p-4 border-l-6 border-neutral-950">
+                <FilePreview/>
             </aside>
         </div>
     )

@@ -177,9 +177,9 @@ function TreeNodeRow({node, rowRef,}: { node: TreeNode; rowRef: (el: HTMLDivElem
                     </button>
                 ) : (<span/>)}
 
-                <span className={isFolder ? "text-sm font-semibold text-gray-900" : "text-sm text-gray-700"}>
-          {node.name}
-        </span>
+                <span className={"text-gray-200 text-sm " + (isFolder ? "font-bold" : "")}>
+                    {node.name}
+                </span>
             </div>
 
             {isFolder && expanded && node.children.length > 0 && (
