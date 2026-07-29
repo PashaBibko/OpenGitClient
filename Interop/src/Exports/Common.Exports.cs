@@ -29,4 +29,11 @@ public static partial class InteropExports
             }
         };
     }
+
+    [UnmanagedCallersOnly(EntryPoint = "OpenGitClientInterop_FreePtr")]
+    public static void FreePtr(IntPtr ptr)
+    {
+        if (ptr != IntPtr.Zero)
+            Marshal.FreeHGlobal(ptr);
+    }
 }

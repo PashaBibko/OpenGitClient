@@ -7,6 +7,10 @@
 int main() {
     git_libgit2_init();
 
+    // Loads the user's appdata
+    std::string appdataFolder = OpenGitClientInterop::GetAppDataDir();
+    std::cout << "Using app data folder: [" << appdataFolder << "]\n";
+
     // Sets up the web function router so the messages from the frontend call the correct functions
     static WebFunctionRouter<AppContext> router; // Has to be static to be passed into the callback
     router.AddFunction<Repo::Choose>("Repo.Choose");
