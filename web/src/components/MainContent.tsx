@@ -2,8 +2,9 @@ import {useAppState} from "../AppState.ts";
 import {PhotinoBridge} from "../photino.ts";
 
 import {useState, useEffect} from "react";
+import {SideBar} from "./SideBar.tsx";
 
-interface FileStatusBreakdown {
+export interface FileStatusBreakdown {
     FileLocation: string;
     SpecialState: string;
     StagedState: string;
@@ -11,7 +12,7 @@ interface FileStatusBreakdown {
 }
 
 export function MainContent() {
-    const [ fileChanges, setFileChanges ] = useState<FileStatusBreakdown[] | null>(null);
+    const [fileChanges, setFileChanges] = useState<FileStatusBreakdown[] | null>(null);
     const workingDir = useAppState((state) => state.CurrentWorkingDir);
 
     // Makes sure it has the correct file changes stored for the current repository
@@ -30,7 +31,7 @@ export function MainContent() {
         return () => {
             cancelled = true;
         }
-    }, [ workingDir?.Filepath, workingDir?.IsRepository ])
+    }, [workingDir?.Filepath, workingDir?.IsRepository])
 
     // Gets the working dir and checks if it is a repository and displays relevant screen if it isn't
     if (workingDir === null || !workingDir.IsRepository) {
@@ -56,21 +57,14 @@ export function MainContent() {
     }
 
     return (
-        <div>
-            {fileChanges.map((fileInfo: FileStatusBreakdown) => (
-                <div key={fileInfo.FileLocation} className="text-gray-200">
-                    <span className="font-bold">
-                        {fileInfo.FileLocation}:
-                    </span>
+        <div className="flex flex-1 h-max">
+            <aside className="bg-green-500 w-96 shrink-0">
+                <SideBar fileChanges={fileChanges}/>
+            </aside>
 
-                     <div className="w-20"/>
-
-                    {fileInfo.SpecialState !== "none"
-                        ? fileInfo.SpecialState
-                        : fileInfo.StagedState + " | " + fileInfo.UnstagedState
-                    }
-                </div>
-            ))}
+            <aside className="bg-yellow-800 flex-1 p-4">
+                Main Content
+            </aside>
         </div>
     )
 }
