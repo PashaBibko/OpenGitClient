@@ -24,7 +24,6 @@ std::vector<std::string> Repo::GetFileDiff::Invoke(AppContext& ctx, const std::s
 
     git_buf buf = { .ptr = nullptr };
     git_patch_to_buf(&buf, patch);
-    std::cout << buf.ptr << std::endl;
 
     std::stringstream stream(buf.ptr);
     std::vector<std::string> lines;

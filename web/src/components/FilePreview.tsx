@@ -12,7 +12,7 @@ export function FilePreview() {
             return; // Nothing to fetch
         }
 
-        let cancelled = false;
+        let cancelled: boolean = false;
         PhotinoBridge.CallBackend("Repo.GetFileDiff", selectedFile).then(raw => {
             if (!cancelled) {
                 const content = raw as string[];
