@@ -1,4 +1,4 @@
-#include "Functions.h"
+#include "../Functions.h"
 
 static std::optional<git_status_list*> GetRepoFileStatus(const AppContext& ctx) {
     // Checks that there is an open repo
@@ -7,7 +7,7 @@ static std::optional<git_status_list*> GetRepoFileStatus(const AppContext& ctx) 
         return std::nullopt;
     }
 
-    // Fetches ALL of the files with changes (unstaged or not)
+    // Fetches ALL the files with changes (unstaged or not)
     git_status_list* statusList = nullptr;
     git_status_options opts = GIT_STATUS_OPTIONS_INIT;
     opts.show = GIT_STATUS_SHOW_INDEX_AND_WORKDIR;

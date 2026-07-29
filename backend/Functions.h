@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include "../Router/WebFunction.h"
-#include "../AppContext.h"
+#include "Router/WebFunction.h"
+#include "AppContext.h"
 
 namespace Repo {
     struct ChooseResult {
@@ -26,5 +26,10 @@ namespace Repo {
     class GetChanges final : public WebFunction<AppContext, void, std::vector<FileStatusBreakdown>> {
     public:
         std::vector<FileStatusBreakdown> Invoke(AppContext& ctx) override;
+    };
+
+    class GetFileDiff final : public WebFunction<AppContext, std::string, void>{
+    public:
+        void Invoke(AppContext& ctx, const std::string& filepath) override;
     };
 } // namespace Repo

@@ -1,7 +1,7 @@
 #include "InteropBindings/OpenGitClientInterop.h"
 #include "Router/WebFunctionRouter.h"
 #include "Router/WebFunction.h"
-#include "Functions/Functions.h"
+#include "Functions.h"
 #include "AppContext.h"
 
 int main() {
@@ -11,6 +11,7 @@ int main() {
     static WebFunctionRouter<AppContext> router; // Has to be static to be passed into the callback
     router.AddFunction<Repo::Choose>("Repo.Choose");
     router.AddFunction<Repo::GetChanges>("Repo.GetChanges");
+    router.AddFunction<Repo::GetFileDiff>("Repo.GetFileDiff");
 
     // Starts photino.net with a message receiver to forward to the web function router
     OpenGitClientInterop::BindMessageReceiverCallback(

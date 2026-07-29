@@ -32,7 +32,7 @@ export class PhotinoBridge {
         });
     }
 
-    public static CallBackend(funcName: string, params: object | null = null): Promise<any> {
+    public static CallBackend(funcName: string, params: any = null): Promise<any> {
         let message: string = funcName;
         if (params !== null) {
             message += '|' + JSON.stringify(params);
