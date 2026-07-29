@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 
 export function FilePreview() {
     const selectedFile = useAppState((state) => state.SelectedFile);
-    const [fileContent, setFileContent] = useState<string | null>();
+    const [fileContent, setFileContent] = useState<string[] | null>();
 
     // Fetches the latest changes of the current file
     useEffect(() => {
@@ -15,7 +15,7 @@ export function FilePreview() {
         let cancelled = false;
         PhotinoBridge.CallBackend("Repo.GetFileDiff", selectedFile).then(raw => {
             if (!cancelled) {
-                const content = raw as string;
+                const content = raw as string[];
                 setFileContent(content);
             }
         })
@@ -24,9 +24,10 @@ export function FilePreview() {
         return () => {
             cancelled = true;
         }
-    })
+    }, [selectedFile]);
 
-    if (selectedFile === null) {
+    // Keeps no file selected message whilst loading the file to avoid flashes
+    if (selectedFile === null || fileContent === null || fileContent === undefined) {
         return (
             <div className="text-gray-200">
                 No file selected.
@@ -36,7 +37,11 @@ export function FilePreview() {
 
     return (
         <div className="text-gray-200">
-            {fileContent}
+            {fileContent.map((line, index) => (
+                <div key={index} className="whitespace-pre-wrap">
+                    {line}
+                </div>
+            ))}
         </div>
     )
 }

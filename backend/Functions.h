@@ -28,8 +28,8 @@ namespace Repo {
         std::vector<FileStatusBreakdown> Invoke(AppContext& ctx) override;
     };
 
-    class GetFileDiff final : public WebFunction<AppContext, std::string, void>{
+    class GetFileDiff final : public WebFunction<AppContext, std::string, std::vector<std::string>>{
     public:
-        void Invoke(AppContext& ctx, const std::string& filepath) override;
+        std::vector<std::string> Invoke(AppContext& ctx, const std::string& filepath) override;
     };
 } // namespace Repo
