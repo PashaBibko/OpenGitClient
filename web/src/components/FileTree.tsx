@@ -1,5 +1,6 @@
 ﻿import {useLayoutEffect, useRef, useState} from "react";
 import {FileStatusBreakdown} from "./MainContent.tsx";
+import {useAppState} from "../AppState.ts";
 
 const ROW_HEIGHT = 28; // px — just the visual label row, not the whole subtree
 const INDENT = 20; // px width of the connector gutter
@@ -161,7 +162,9 @@ function ChevronIcon({ expanded }: { expanded: boolean }) {
 }
 
 function TreeNodeRow({node, rowRef,}: { node: TreeNode; rowRef: (el: HTMLDivElement | null) => void; }) {
+    const setSelectedFile = useAppState((state) => state.setSelectedFile);
     const [expanded, setExpanded] = useState(true);
+
     const isFolder = node.type === "folder";
 
     return (
@@ -178,7 +181,11 @@ function TreeNodeRow({node, rowRef,}: { node: TreeNode; rowRef: (el: HTMLDivElem
                 ) : (<span/>)}
 
                 <span className={"text-gray-200 text-sm " + (isFolder ? "font-bold" : "")}>
-                    {node.name}
+                    {isFolder ? node.name : (
+                        <button onClick={() => setSelectedFile(node.path)}>
+                            {node.name}
+                        </button>
+                    )}
                 </span>
             </div>
 
