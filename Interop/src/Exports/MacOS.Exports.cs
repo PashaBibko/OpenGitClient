@@ -15,7 +15,7 @@ public static partial class InteropExports
             .WaitForClose();
     }
 
-    [UnmanagedCallersOnly(EntryPoint = "OpenGitClient_GetAppDataDir")]
+    [UnmanagedCallersOnly(EntryPoint = "OpenGitClientInterop_GetAppDataDir")]
     public static IntPtr GetAppDataDir_MacOS()
     {
         string homePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);

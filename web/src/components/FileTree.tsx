@@ -161,8 +161,19 @@ function ChevronIcon({ expanded }: { expanded: boolean }) {
     );
 }
 
-function TreeNodeRow({node, rowRef,}: { node: TreeNode; rowRef: (el: HTMLDivElement | null) => void; }) {
+function FileDisplay({ node }: { node: FileNode}) {
     const setSelectedFile = useAppState((state) => state.setSelectedFile);
+
+    return (
+        <div>
+            <button onClick={() => setSelectedFile(node.path)}>
+                {node.name}
+            </button>
+        </div>
+    );
+}
+
+function TreeNodeRow({ node, rowRef }: { node: TreeNode; rowRef: (el: HTMLDivElement | null) => void; }) {
     const [expanded, setExpanded] = useState(true);
 
     const isFolder = node.type === "folder";
@@ -181,11 +192,7 @@ function TreeNodeRow({node, rowRef,}: { node: TreeNode; rowRef: (el: HTMLDivElem
                 ) : (<span/>)}
 
                 <span className={"text-gray-200 text-sm " + (isFolder ? "font-bold" : "")}>
-                    {isFolder ? node.name : (
-                        <button onClick={() => setSelectedFile(node.path)}>
-                            {node.name}
-                        </button>
-                    )}
+                    {isFolder ? node.name : <FileDisplay node={node}/> }
                 </span>
             </div>
 
