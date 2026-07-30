@@ -22,6 +22,14 @@ static std::optional<std::string> GetUserChosenPath() {
         return std::nullopt;
     }
 
+    // Windows sometimes returns empty paths, instead of returning NFD_CANCEL so we have to do
+    // an additional check, ALSO FUCK WINDOWS AND MICROSOFT WITH THEIR TERRIBLE CODED SOFTWARE
+    if (chosenPath.empty()) {
+        return std::nullopt;
+    }
+
+    std::cout << "User chosen path: [" << chosenPath << "]\n";
+
     // Cleans up all allocated resources before returning
     if (outPath != nullptr) {
         NFD_FreePath(outPath);
@@ -64,6 +72,7 @@ Repo::ChooseResult Repo::Choose::Invoke(AppContext& ctx) {
     const std::optional chosenPath = GetUserChosenPath();
     if (chosenPath == std::nullopt) {
         // Default result, TODO: Add support for std::optional return values from web functions
+        std::cout << "User chose not to select a folder";
         return {.Filepath = "", .IsRepository = false};
     }
 

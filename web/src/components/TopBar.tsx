@@ -16,9 +16,11 @@ export function PickRepoButton({ prompt }: { prompt: string}) {
         <button
             className="bg-neutral-600 border-2 rounded-md border-neutral-950 px-2 text-md text-gray-200"
             onClick={() => {
-                PhotinoBridge.CallBackend("Repo.Choose").then(
-                    (res: any) => setWorkingDirectory(res)
-                )
+                PhotinoBridge.CallBackend("Repo.Choose").then((cwd: WorkingDir) => {
+                    if (cwd.Filepath !== "") { // Empty string means something went wrong or was canceled
+                        setWorkingDirectory(cwd);
+                    }
+                })
             }}
         >{prompt}</button>
     )
