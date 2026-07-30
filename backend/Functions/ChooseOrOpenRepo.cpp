@@ -70,3 +70,15 @@ Repo::ChooseResult Repo::Choose::Invoke(AppContext& ctx) {
     // Tries to open the git repository at the chosen location
     return TryDiscoverRepositoryAt(chosenPath.value(), ctx);
 }
+
+bool Repo::Open::Invoke(AppContext& ctx, const std::string& path) {
+    git_repository* repo = nullptr;
+    if (const int ec = git_repository_open(&repo, path.c_str()); ec == 0) {
+        ctx.m_UserData.m_LastOpenedRepository = path;
+        ctx.m_SelectedRepo = repo;
+
+        return true;
+    }
+
+    return false;
+}

@@ -152,7 +152,7 @@ add_executable(OpenGitClient
         backend/Router/WebFunctionRouter.h
         backend/Router/WebFunction.h
         backend/Functions/GetRepoChanges.cpp
-        backend/Functions/ChooseRepo.cpp
+        backend/Functions/ChooseOrOpenRepo.cpp
         backend/Functions/GetFileDiff.cpp
         backend/Functions.h
         backend/AppContext.h

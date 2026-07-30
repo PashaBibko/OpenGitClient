@@ -16,6 +16,11 @@ namespace Repo {
         ChooseResult Invoke(AppContext& ctx) override;
     };
 
+    class Open final : public WebFunction<AppContext, std::string, bool> {
+    public:
+        bool Invoke(AppContext& ctx, const std::string& path) override;
+    };
+
     struct FileStatusBreakdown {
         std::string FileLocation;
         std::string SpecialState;
