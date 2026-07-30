@@ -146,17 +146,19 @@ FetchContent_MakeAvailable(nfd)
 
 # Creates the C++ executable from the project source files
 add_executable(OpenGitClient
-        backend/main.cpp
         backend/InteropBindings/Functions.h
         backend/InteropBindings/OpenGitClientInterop.cpp
         backend/InteropBindings/OpenGitClientInterop.h
-        backend/Router/WebFunction.h
         backend/Router/WebFunctionRouter.h
-        backend/Functions.h
-        backend/Functions/ChooseRepo.cpp
-        backend/AppContext.h
+        backend/Router/WebFunction.h
         backend/Functions/GetRepoChanges.cpp
+        backend/Functions/ChooseRepo.cpp
         backend/Functions/GetFileDiff.cpp
+        backend/Functions.h
+        backend/AppContext.h
+        backend/UserData.h
+        backend/UserData.cpp
+        backend/main.cpp
 )
 
 # Links the C++ executable to the included libraries + the C# interop binary

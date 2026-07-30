@@ -54,6 +54,8 @@ static Repo::ChooseResult TryDiscoverRepositoryAt(const std::string& path, AppCo
 
     git_buf_dispose(&repoPath);
 
+    // Stores the location in the app context before returning
+    ctx.m_UserData.m_LastOpenedRepository = repoLocation;
     return {.Filepath = repoLocation, .IsRepository = true};
 }
 

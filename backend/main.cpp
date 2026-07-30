@@ -5,14 +5,12 @@
 #include "AppContext.h"
 
 int main() {
-    git_libgit2_init();
-
     // Loads the user's appdata
-    std::string appdataFolder = OpenGitClientInterop::GetAppDataDir();
+    const std::string appdataFolder = OpenGitClientInterop::GetAppDataDir();
     std::cout << "Using app data folder: [" << appdataFolder << "]\n";
 
     // Sets up the web function router so the messages from the frontend call the correct functions
-    static WebFunctionRouter<AppContext> router; // Has to be static to be passed into the callback
+    static WebFunctionRouter<AppContext> router { appdataFolder }; // Has to be static to be passed into the callback
     router.AddFunction<Repo::Choose>("Repo.Choose");
     router.AddFunction<Repo::GetChanges>("Repo.GetChanges");
     router.AddFunction<Repo::GetFileDiff>("Repo.GetFileDiff");
@@ -36,7 +34,4 @@ int main() {
             return buffer;
         });
     OpenGitClientInterop::StartPhotino(); // Blocks until window is closed
-
-    //
-    git_libgit2_shutdown();
 }

@@ -8,6 +8,10 @@ class WebFunctionRouter {
     AppContextTy m_AppContext;
 
 public:
+    template<typename... Args>
+    explicit WebFunctionRouter(Args&&... args) : m_AppContext(std::forward<Args>(args)...) {
+    }
+
     std::optional<std::string> InvokeFunction(const std::string& name, const char* serialized) {
         if (const auto iter = m_Functions.find(name); iter != m_Functions.end()) {
             return iter->second->InvokeInner(m_AppContext, serialized);
