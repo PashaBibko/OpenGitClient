@@ -3,18 +3,15 @@
 A small and simple open source git client, designed for basic git operations. Works natively on Windows and macOS
 ([not Linux](#linux-support)). Built with C++, C# and TypeScript using a primarily CMake build system.
 
-### Libraries used
+### Current Features, (all planned for v1.0)
 
-| Library            | Purpose                                      |
-|--------------------|----------------------------------------------|
-| **Vite**           | Web bundler                                  |
-| **ViteSingleFile** | Helps Photino.NET easily display the webpage |
-| **TailwindCSS**    | CSS styling for the frontend                 |
-| **Photino.NET**    | Handles the window and webpage display       |
-| **Glaze**          | JSON read/write for C++                      |
-| **libgit2**        | Git interaction for C/C++                    |
-| **nfd**            | Opens native file explorer for C++           |
-| **zustand**        | Handles react app global context             |
+- [x] Select/open a repository
+- [ ] Commit changes
+- [ ] Stash (+ un-stash) changes
+- [ ] Pull (fetch + merge) from origin
+- [ ] Push to origin
+- [ ] Switch branch
+- [ ] Basic auth
 
 ### Build
 
@@ -53,6 +50,19 @@ npm run dev
 # or
 node scripts/quickload.js
 ```
+
+### Libraries used
+
+| Library            | Purpose                                      |
+|--------------------|----------------------------------------------|
+| **Vite**           | Web bundler                                  |
+| **ViteSingleFile** | Helps Photino.NET easily display the webpage |
+| **TailwindCSS**    | CSS styling for the frontend                 |
+| **Photino.NET**    | Handles the window and webpage display       |
+| **Glaze**          | JSON read/write for C++                      |
+| **libgit2**        | Git interaction for C/C++                    |
+| **nfd**            | Opens native file explorer for C++           |
+| **zustand**        | Handles react app global context             |
 
 ### Linux Support
 Linux is not directly supported for this project, for a couple of reasons. The main one is that I have designed it for
