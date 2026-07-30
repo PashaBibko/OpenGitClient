@@ -1,8 +1,6 @@
 ﻿#include "../Functions.h"
 
 std::vector<std::string> Repo::GetFileDiff::Invoke(AppContext& ctx, const std::string& filepath) {
-    std::cout << "GetFileDiff::Invoke (" << filepath << ")\n";
-
     git_object* headObject = nullptr;
     git_revparse_single(&headObject, ctx.m_SelectedRepo, "HEAD^{tree}");
 

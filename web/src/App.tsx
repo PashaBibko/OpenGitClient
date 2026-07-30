@@ -15,9 +15,8 @@ export function App() {
                 return;
             }
 
-            console.log(path);
-
-            PhotinoBridge.CallBackend("Repo.Open", path).then((canQuickLoad: boolean) => {
+            const filteredPath = path.replace(/\.git\/$/, "");
+            PhotinoBridge.CallBackend("Repo.Open", filteredPath).then((canQuickLoad: boolean) => {
                 console.log(canQuickLoad);
 
                 setQuickloadState(canQuickLoad);

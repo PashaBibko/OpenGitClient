@@ -72,6 +72,4 @@ UserData::~UserData() {
 
     userDataFile << json;
     userDataFile.close();
-
-    std::cout << "Saved: " << json << "\n";
 }
