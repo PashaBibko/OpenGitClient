@@ -5,6 +5,15 @@
 #include "Router/WebFunction.h"
 #include "AppContext.h"
 
+namespace User {
+    class GetLastOpenedRepo final : public WebFunction<AppContext, void, std::string> {
+    public:
+        std::string Invoke(AppContext& ctx) override {
+            return ctx.m_UserData.m_LastOpenedRepository;
+        }
+    };
+} // namespace User
+
 namespace Repo {
     struct ChooseResult {
         std::string Filepath;

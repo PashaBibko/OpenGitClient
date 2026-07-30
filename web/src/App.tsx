@@ -9,19 +9,25 @@ export function App() {
     const setWorkingDirectory = useAppState((state) => state.setWorkingDir);
 
     useEffect(() => {
-        const path: string = "D:/repos/projects/OpenGitClient/.git/";
-        PhotinoBridge.CallBackend("Repo.Open", path).then((res: any) => {
-            const canQuickLoad = res as boolean;
-            console.log(canQuickLoad);
-
-            setQuickloadState(canQuickLoad);
-
-            if (canQuickLoad) {
-                setWorkingDirectory({
-                    Filepath: path,
-                    IsRepository: true
-                });
+        PhotinoBridge.CallBackend("User.GetLastOpenedRepo").then((path: string) => {
+            if (path === "") {
+                setQuickloadState(false);
+                return;
             }
+
+            console.log(path);
+
+            PhotinoBridge.CallBackend("Repo.Open", path).then((canQuickLoad: boolean) => {
+                console.log(canQuickLoad);
+
+                setQuickloadState(canQuickLoad);
+                if (canQuickLoad) {
+                    setWorkingDirectory({
+                        Filepath: path,
+                        IsRepository: true
+                    });
+                }
+            })
         })
     }, []);
 

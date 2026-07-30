@@ -17,6 +17,8 @@ int main() {
     router.AddFunction<Repo::GetChanges>("Repo.GetChanges");
     router.AddFunction<Repo::GetFileDiff>("Repo.GetFileDiff");
 
+    router.AddFunction<User::GetLastOpenedRepo>("User.GetLastOpenedRepo");
+
     // Starts photino.net with a message receiver to forward to the web function router
     OpenGitClientInterop::BindMessageReceiverCallback(
         [](const char* name, const char* serializedVal) -> char* {
