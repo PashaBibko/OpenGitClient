@@ -28,8 +28,6 @@ static std::optional<std::string> GetUserChosenPath() {
         return std::nullopt;
     }
 
-    std::cout << "User chosen path: [" << chosenPath << "]\n";
-
     // Cleans up all allocated resources before returning
     if (outPath != nullptr) {
         NFD_FreePath(outPath);
@@ -58,9 +56,13 @@ static Repo::ChooseResult TryDiscoverRepositoryAt(const std::string& path, AppCo
 
     // Opens the repository with the discovered path
     git_repository_open(&ctx.m_SelectedRepo, repoPath.ptr);
-    const std::string repoLocation = repoPath.ptr;
-
+    std::string repoLocation = repoPath.ptr;
     git_buf_dispose(&repoPath);
+
+    static constexpr std::string SUFFIX = ".git/";
+    if (repoLocation.ends_with(SUFFIX)) {
+        repoLocation.erase(repoLocation.size() - SUFFIX.size());
+    }
 
     // Stores the location in the app context before returning
     ctx.m_UserData.m_LastOpenedRepository = repoLocation;
@@ -71,7 +73,6 @@ Repo::ChooseResult Repo::Choose::Invoke(AppContext& ctx) {
     // Gets the folder path chosen by the user
     const std::optional chosenPath = GetUserChosenPath();
     if (chosenPath == std::nullopt) {
-        // Default result, TODO: Add support for std::optional return values from web functions
         std::cout << "User chose not to select a folder";
         return {.Filepath = "", .IsRepository = false};
     }
