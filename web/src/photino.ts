@@ -44,6 +44,14 @@ export class PhotinoBridge {
         return result;
     }
 
+    public static Log(message: string): void {
+        this.CallBackend("App.Log", message).then(_ => {});
+    }
+
+    public static LogError(message: string) {
+        this.CallBackend("App.LogError", message).then(_ => {});
+    }
+
     private static SendAndWait(message: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             this.pendingResolve = (response: string) => {

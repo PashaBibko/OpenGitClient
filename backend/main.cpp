@@ -1,4 +1,5 @@
 #include "InteropBindings/OpenGitClientInterop.h"
+#include "Logger/LoggerWebFunctions.h"
 #include "Router/WebFunctionRouter.h"
 #include "Router/WebFunction.h"
 #include "Functions.h"
@@ -11,6 +12,9 @@ int main() {
 
     // Sets up the web function router so the messages from the frontend call the correct functions
     static WebFunctionRouter<AppContext> router { appdataFolder }; // Has to be static to be passed into the callback
+
+    router.AddFunction<Logger::ExternalLog>("App.Log");
+    router.AddFunction<Logger::ExternalLogError>("App.LogError");
 
     router.AddFunction<Repo::Choose>("Repo.Choose");
     router.AddFunction<Repo::Open>("Repo.Open");

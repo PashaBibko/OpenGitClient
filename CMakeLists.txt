@@ -154,6 +154,9 @@ add_executable(OpenGitClient
         backend/Functions/GetRepoChanges.cpp
         backend/Functions/ChooseOrOpenRepo.cpp
         backend/Functions/GetFileDiff.cpp
+        backend/Logger/LoggerWebFunctions.h
+        backend/Logger/Logger.h
+        backend/Logger/Logger.cpp
         backend/Functions.h
         backend/AppContext.h
         backend/UserData.h
