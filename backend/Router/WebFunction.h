@@ -4,8 +4,6 @@
 
 #include <iostream>
 
-#include "../Logger/Logger.h"
-
 template <typename Ty>
 concept JsonSupported = std::is_same_v<Ty, void> ||
     (glz::write_supported<Ty, glz::JSON> && glz::read_supported<Ty, glz::JSON>);
@@ -48,7 +46,7 @@ public:
         if constexpr (std::is_void_v<InputTy>) {
             // Sends a warning if an object was provided
             if (json != nullptr) {
-                Logger::LogError("Input parameter was provided to a void web function.");
+                ctx.m_Logger.LogError("Input parameter was provided to a void web function");
                 return std::nullopt;
             }
 

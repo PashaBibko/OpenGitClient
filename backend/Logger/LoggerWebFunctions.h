@@ -1,22 +1,20 @@
 #pragma once
 
 #include "../Router/WebFunction.h"
-#include "Logger.h"
+#include "../AppContext.h"
 
-struct AppContext;
-
-namespace Logger {
-    class ExternalLog final : public WebFunction<AppContext, std::string, void> {
+namespace ExternalLoggerInterface {
+    class Log final : public WebFunction<AppContext, std::string, void> {
     public:
         void Invoke(AppContext &ctx, const std::string& message) override {
-            Internal::LogInternal(message);
+            ctx.m_Logger.Log("[Frontend] ", message);
         }
     };
 
-    class ExternalLogError final : public WebFunction<AppContext, std::string, void> {
+    class LogError final : public WebFunction<AppContext, std::string, void> {
     public:
         void Invoke(AppContext &ctx, const std::string& message) override {
-            Internal::LogInternal(message);
+            ctx.m_Logger.LogError("[Frontend-Error]", message);
         }
     };
-}
+} // namespace ExternalLoggerInterface

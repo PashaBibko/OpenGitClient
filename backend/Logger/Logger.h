@@ -2,30 +2,36 @@
 
 #include <sstream>
 
-namespace Logger {
-    template<typename Ty>
-    concept Logable = requires(std::ostream& os, Ty arg)
-    {
-        { os << arg } -> std::same_as<std::ostream&>;
-    };
+template <typename Ty>
+concept LogableType = requires(std::ostream& os, Ty arg) {
+    { os << arg } -> std::same_as<std::ostream&>;
+};
 
-    namespace Internal {
-        void LogInternal(const std::string& message);
-    } // namespace Internal
+class Logger final {
+    void OutputLogMessage(const std::string& message) {
+        std::cout << message << std::endl;
+    }
+
+public:
+    Logger() = delete;
+    explicit Logger(const std::string& outputFolder) {
+    }
+
+    ~Logger() = default;
 
     template<typename... Args>
-        requires (Logable<Args> && ...)
+        requires (LogableType<Args> && ...)
     void Log(Args&&... args) {
         std::stringstream ss;
         (ss << ... << std::forward<Args>(args));
-        Internal::LogInternal(ss.str());
+        OutputLogMessage(ss.str());
     }
 
     template<typename... Args>
-        requires (Logable<Args> && ...)
+        requires (LogableType<Args> && ...)
     void LogError(Args&&... args) {
         std::stringstream ss;
         (ss << ... << std::forward<Args>(args));
-        Internal::LogInternal(ss.str());
+        OutputLogMessage(ss.str());
     }
-} // namespace Logger
+};
