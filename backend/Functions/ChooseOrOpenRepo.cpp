@@ -59,7 +59,7 @@ static Repo::ChooseResult TryDiscoverRepositoryAt(const std::string& path, AppCo
     std::string repoLocation = repoPath.ptr;
     git_buf_dispose(&repoPath);
 
-    static constexpr std::string SUFFIX = ".git/";
+    static std::string SUFFIX = ".git/";
     if (repoLocation.ends_with(SUFFIX)) {
         repoLocation.erase(repoLocation.size() - SUFFIX.size());
     }
