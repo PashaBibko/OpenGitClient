@@ -24,7 +24,7 @@ jobs:
       - name: Install Node.js / npm
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Verify Node/npm
         run: |
@@ -41,7 +41,7 @@ jobs:
 
       - name: Configure (CMake)
         run: |
-          cmake -S . -B build -G "Visual Studio 17 2022" -A x64
+          cmake -S . -B build -A x64
 
       - name: Build (CMake)
         run: |
