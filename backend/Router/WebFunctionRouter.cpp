@@ -7,6 +7,8 @@ char* WebFunctionRouter::Route(const char* funcName, const char* serialized) {
 }
 
 char* WebFunctionRouter::RouteInner(const char* funcName, const char* serialized) {
+    m_AppContext.Log("Web function [", funcName, "] called.");
+
     // Deletes anything remaining in the shared buffer
     delete m_SharedBuffer;
     m_SharedBuffer = nullptr;

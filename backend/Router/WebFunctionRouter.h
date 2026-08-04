@@ -30,6 +30,7 @@ public:
     template<typename FunctionTy, typename InputTy = FunctionTy::InputType, typename OutputTy = FunctionTy::OutputType, typename... Args>
         requires std::derived_from<FunctionTy, WebFunction<InputTy, OutputTy>>
     void AddFunction(const char* name, Args&&... args) {
+        m_AppContext.Log("Added function \"", name, "\"");
         m_Functions[name] = std::make_unique<WebFunctionContainerImpl<FunctionTy>>(std::forward<Args>(args)...);
     }
 
