@@ -147,18 +147,17 @@ FetchContent_MakeAvailable(nfd)
 add_executable(OpenGitClient
         backend/AppContext/AppContext.cpp
         backend/AppContext/AppContext.h
-        backend/InteropBindings/Functions.h
-        backend/InteropBindings/OpenGitClientInterop.cpp
-        backend/InteropBindings/OpenGitClientInterop.h
-        backend/Router/WebFunctionRouter.h
-        backend/Router/WebFunction.h
-        backend/Router/WebFunctionRouter.cpp
-        backend/Functions/GetRepoChanges.cpp
+        backend/AppContext/AppContextAccess.h
         backend/Functions/ChooseOrOpenRepo.cpp
         backend/Functions/GetFileDiff.cpp
-        backend/Logger/LoggerWebFunctions.h
-        backend/Logger/Logger.h
-        backend/Functions.h
+        backend/Functions/GetRepoChanges.cpp
+        backend/Functions/WebFunctions.h
+        backend/InteropBindings/ExternalFunctions.h
+        backend/InteropBindings/OpenGitClientInterop.cpp
+        backend/InteropBindings/OpenGitClientInterop.h
+        backend/Router/WebFunction.h
+        backend/Router/WebFunctionRouter.cpp
+        backend/Router/WebFunctionRouter.h
         backend/main.cpp
 )
 

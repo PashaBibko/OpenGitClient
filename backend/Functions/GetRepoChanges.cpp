@@ -1,4 +1,4 @@
-#include "../Functions.h"
+#include "WebFunctions.h"
 
 static std::optional<git_status_list*> GetRepoFileStatus(AppContext& ctx) {
     // Checks that there is an open repo

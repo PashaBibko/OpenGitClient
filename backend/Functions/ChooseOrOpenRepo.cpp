@@ -1,4 +1,4 @@
-﻿#include "../Functions.h"
+﻿#include "WebFunctions.h"
 
 #include <string>
 

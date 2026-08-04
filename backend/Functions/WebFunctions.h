@@ -2,11 +2,11 @@
 
 #include <string>
 
-#include "Router/WebFunction.h"
-#include "AppContext/AppContext.h"
+#include "../Router/WebFunction.h"
+#include "../AppContext/AppContext.h"
 
 namespace User {
-    class GetLastOpenedRepo final : public WebFunction<AppContext, void, std::string> {
+    class GetLastOpenedRepo final : public WebFunction<void, std::string> {
     public:
         std::string Invoke(AppContext& ctx) override {
             return ctx.m_LastOpenedRepository;
@@ -20,12 +20,12 @@ namespace Repo {
         bool IsRepository;
     };
 
-    class Choose final : public WebFunction<AppContext, void, ChooseResult> {
+    class Choose final : public WebFunction<void, ChooseResult> {
     public:
         ChooseResult Invoke(AppContext& ctx) override;
     };
 
-    class Open final : public WebFunction<AppContext, std::string, bool> {
+    class Open final : public WebFunction<std::string, bool> {
     public:
         bool Invoke(AppContext& ctx, const std::string& path) override;
     };
@@ -37,12 +37,12 @@ namespace Repo {
         std::string UnstagedState;
     };
 
-    class GetChanges final : public WebFunction<AppContext, void, std::vector<FileStatusBreakdown>> {
+    class GetChanges final : public WebFunction<void, std::vector<FileStatusBreakdown>> {
     public:
         std::vector<FileStatusBreakdown> Invoke(AppContext& ctx) override;
     };
 
-    class GetFileDiff final : public WebFunction<AppContext, std::string, std::vector<std::string>>{
+    class GetFileDiff final : public WebFunction<std::string, std::vector<std::string>>{
     public:
         std::vector<std::string> Invoke(AppContext& ctx, const std::string& filepath) override;
     };

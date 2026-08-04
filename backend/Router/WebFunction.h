@@ -10,23 +10,21 @@ template <typename Ty>
 concept JsonSupported = std::is_same_v<Ty, void> ||
     (glz::write_supported<Ty, glz::JSON> && glz::read_supported<Ty, glz::JSON>);
 
-template <typename AppContextTy, JsonSupported InputTy, JsonSupported OutputTy>
+template <JsonSupported InputTy, JsonSupported OutputTy>
 struct WebFunction {
     using InputType = InputTy;
     using OutputType = OutputTy;
-    using AppContextType = AppContextTy;
 
-    virtual OutputTy Invoke(AppContextTy& ctx, const InputTy& object) = 0;
+    virtual OutputTy Invoke(AppContext& ctx, const InputTy& object) = 0;
     virtual ~WebFunction() = default;
 };
 
-template <typename AppContextTy, JsonSupported OutputTy>
-struct WebFunction<AppContextTy, void, OutputTy> {
+template <JsonSupported OutputTy>
+struct WebFunction<void, OutputTy> {
     using InputType = void;
     using OutputType = OutputTy;
-    using AppContextType = AppContextTy;
 
-    virtual OutputTy Invoke(AppContextTy& ctx) = 0;
+    virtual OutputTy Invoke(AppContext& ctx) = 0;
     virtual ~WebFunction() = default;
 };
 
@@ -37,7 +35,7 @@ public:
 };
 
 template <typename FunctionTy, typename InputTy = FunctionTy::InputType, typename OutputTy = FunctionTy::OutputType>
-    requires std::derived_from<FunctionTy, WebFunction<AppContext, InputTy, OutputTy>>
+    requires std::derived_from<FunctionTy, WebFunction<InputTy, OutputTy>>
 class WebFunctionContainerImpl final : public WebFunctionContainer {
     FunctionTy m_InnerFunction{};
 

@@ -1,6 +1,6 @@
 #include "OpenGitClientInterop.h"
 
-#include "Functions.h"
+#include "ExternalFunctions.h"
 
 void OpenGitClientInterop::BindMessageReceiverCallback(OpenGitClientMessageReceiverCallback callback) {
     OpenGitClientInterop_BindMessageReceiver(callback);

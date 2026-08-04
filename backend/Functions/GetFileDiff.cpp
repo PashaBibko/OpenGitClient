@@ -1,4 +1,4 @@
-﻿#include "../Functions.h"
+﻿#include "WebFunctions.h"
 
 std::vector<std::string> Repo::GetFileDiff::Invoke(AppContext& ctx, const std::string& filepath) {
     git_object* headObject = nullptr;

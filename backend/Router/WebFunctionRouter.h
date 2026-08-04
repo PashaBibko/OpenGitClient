@@ -27,10 +27,10 @@ public:
         sInstance = nullptr;
     }
 
-    template<typename FunctionTy, typename InputTy = FunctionTy::InputType, typename OutputTy = FunctionTy::OutputType>
-        requires std::derived_from<FunctionTy, WebFunction<AppContext, InputTy, OutputTy>>
-    void AddFunction(const char* name) {
-        m_Functions[name] = std::make_unique<WebFunctionContainerImpl<FunctionTy>>();
+    template<typename FunctionTy, typename InputTy = FunctionTy::InputType, typename OutputTy = FunctionTy::OutputType, typename... Args>
+        requires std::derived_from<FunctionTy, WebFunction<InputTy, OutputTy>>
+    void AddFunction(const char* name, Args&&... args) {
+        m_Functions[name] = std::make_unique<WebFunctionContainerImpl<FunctionTy>>(std::forward<Args>(args)...);
     }
 
     static char* Route(const char* funcName, const char* serialized);
