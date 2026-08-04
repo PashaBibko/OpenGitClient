@@ -1,0 +1,51 @@
+name: macOS Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install CMake
+        uses: lukka/get-cmake@latest
+
+      - name: Install C++ compiler (Xcode Command Line Tools)
+        run: |
+          xcode-select --install || true
+          sudo xcode-select --print-path
+          clang --version
+
+      - name: Install Node.js / npm
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Verify Node/npm
+        run: |
+          node --version
+          npm --version
+
+      - name: Install .NET SDK (v8+)
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Verify .NET
+        run: dotnet --version
+
+      - name: Configure (CMake)
+        run: |
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build (CMake)
+        run: |
+          cmake --build build --config Release
