@@ -11,8 +11,7 @@ static std::optional<git_status_list*> GetRepoFileStatus(AppContext& ctx) {
     git_status_list* statusList = nullptr;
     git_status_options opts = GIT_STATUS_OPTIONS_INIT;
     opts.show = GIT_STATUS_SHOW_INDEX_AND_WORKDIR;
-    opts.flags = GIT_STATUS_OPT_INCLUDE_UNTRACKED | GIT_STATUS_OPT_RENAMES_HEAD_TO_INDEX |
-                 GIT_STATUS_OPT_RENAMES_INDEX_TO_WORKDIR;
+    opts.flags = GIT_STATUS_OPT_INCLUDE_UNTRACKED | GIT_STATUS_OPT_RENAMES_HEAD_TO_INDEX | GIT_STATUS_OPT_RENAMES_INDEX_TO_WORKDIR;
 
     if (git_status_list_new(&statusList, ctx.m_SelectedRepo, &opts) < 0) {
         const git_error* err = git_error_last();
@@ -25,23 +24,16 @@ static std::optional<git_status_list*> GetRepoFileStatus(AppContext& ctx) {
 
 static Repo::FileStatusBreakdown StatusEntryToStatusBreakdown(const git_status_entry* entry) {
     // Fetches the filepath out of the status entry
-    const char* filepath = entry->head_to_index ? entry->head_to_index->old_file.path
-                                                : entry->index_to_workdir->old_file.path;
+    const char* filepath = entry->head_to_index ? entry->head_to_index->old_file.path : entry->index_to_workdir->old_file.path;
 
     // Checks for the special cases, not separate staged and unstaged states
     const unsigned int status = entry->status;
     if (status & GIT_STATUS_CONFLICTED) {
-        return {.FileLocation = filepath,
-                .SpecialState = "conflicted",
-                .StagedState = "none",
-                .UnstagedState = "none"};
+        return {.FileLocation = filepath, .SpecialState = "conflicted", .StagedState = "none", .UnstagedState = "none"};
     }
 
     if (status & GIT_STATUS_IGNORED) {
-        return {.FileLocation = filepath,
-                .SpecialState = "ignored",
-                .StagedState = "none",
-                .UnstagedState = "none"};
+        return {.FileLocation = filepath, .SpecialState = "ignored", .StagedState = "none", .UnstagedState = "none"};
     }
 
     // Staged state (HEAD -> Index)
@@ -72,10 +64,7 @@ static Repo::FileStatusBreakdown StatusEntryToStatusBreakdown(const git_status_e
     else if (status & GIT_STATUS_WT_UNREADABLE)
         unstagedState = "unreadable";
 
-    return {.FileLocation = filepath,
-            .SpecialState = "none",
-            .StagedState = stagedState,
-            .UnstagedState = unstagedState};
+    return {.FileLocation = filepath, .SpecialState = "none", .StagedState = stagedState, .UnstagedState = unstagedState};
 }
 
 std::vector<Repo::FileStatusBreakdown> Repo::GetChanges::Invoke(AppContext& ctx) {

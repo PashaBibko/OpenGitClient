@@ -6,44 +6,44 @@
 #include "../Router/WebFunction.h"
 
 namespace User {
-class GetLastOpenedRepo final : public WebFunction<void, std::string> {
-  public:
-    std::string Invoke(AppContext& ctx) override {
-        return ctx.m_LastOpenedRepository;
-    }
-};
+    class GetLastOpenedRepo final : public WebFunction<void, std::string> {
+    public:
+        std::string Invoke(AppContext& ctx) override {
+            return ctx.m_LastOpenedRepository;
+        }
+    };
 }  // namespace User
 
 namespace Repo {
-struct ChooseResult {
-    std::string Filepath;
-    bool IsRepository;
-};
+    struct ChooseResult {
+        std::string Filepath;
+        bool IsRepository;
+    };
 
-class Choose final : public WebFunction<void, ChooseResult> {
-  public:
-    ChooseResult Invoke(AppContext& ctx) override;
-};
+    class Choose final : public WebFunction<void, ChooseResult> {
+    public:
+        ChooseResult Invoke(AppContext& ctx) override;
+    };
 
-class Open final : public WebFunction<std::string, bool> {
-  public:
-    bool Invoke(AppContext& ctx, const std::string& path) override;
-};
+    class Open final : public WebFunction<std::string, bool> {
+    public:
+        bool Invoke(AppContext& ctx, const std::string& path) override;
+    };
 
-struct FileStatusBreakdown {
-    std::string FileLocation;
-    std::string SpecialState;
-    std::string StagedState;
-    std::string UnstagedState;
-};
+    struct FileStatusBreakdown {
+        std::string FileLocation;
+        std::string SpecialState;
+        std::string StagedState;
+        std::string UnstagedState;
+    };
 
-class GetChanges final : public WebFunction<void, std::vector<FileStatusBreakdown>> {
-  public:
-    std::vector<FileStatusBreakdown> Invoke(AppContext& ctx) override;
-};
+    class GetChanges final : public WebFunction<void, std::vector<FileStatusBreakdown>> {
+    public:
+        std::vector<FileStatusBreakdown> Invoke(AppContext& ctx) override;
+    };
 
-class GetFileDiff final : public WebFunction<std::string, std::vector<std::string>> {
-  public:
-    std::vector<std::string> Invoke(AppContext& ctx, const std::string& filepath) override;
-};
+    class GetFileDiff final : public WebFunction<std::string, std::vector<std::string>> {
+    public:
+        std::vector<std::string> Invoke(AppContext& ctx, const std::string& filepath) override;
+    };
 }  // namespace Repo

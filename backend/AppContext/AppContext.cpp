@@ -17,8 +17,7 @@ void AppContext::OutputLogMessage(const std::string& message) {
     std::cout << message << std::endl;
 }
 
-AppContext::AppContext(const std::string& appDataFolder)
-    : m_AppDataFolder(appDataFolder), m_AppDataFolderExists(false) {
+AppContext::AppContext(const std::string& appDataFolder) : m_AppDataFolder(appDataFolder), m_AppDataFolderExists(false) {
     // Starts up lib git as it is required for anything else to work
     git_libgit2_init();
 

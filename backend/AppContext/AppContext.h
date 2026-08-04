@@ -16,7 +16,7 @@ class AppContext {
 
     void OutputLogMessage(const std::string& message);
 
-  public:
+public:
     git_repository* m_SelectedRepo = nullptr;
     std::string m_LastOpenedRepository;
 

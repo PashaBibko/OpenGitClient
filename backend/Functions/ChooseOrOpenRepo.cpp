@@ -15,8 +15,7 @@ static std::optional<std::string> GetUserChosenPath(AppContext& ctx) {
     nfdchar_t* outPath = nullptr;
     std::string chosenPath;
 
-    if (const nfdresult_t rc = NFD_PickFolder(&outPath, nullptr);
-        rc == NFD_OKAY) {  // nullptr = no default location
+    if (const nfdresult_t rc = NFD_PickFolder(&outPath, nullptr); rc == NFD_OKAY) {  // nullptr = no default location
         chosenPath = outPath;
     } else if (rc != NFD_CANCEL) {  // Doesn't class user canceling as failing
         ctx.LogError("NFD_PickFolder() failed [", NFD_GetError(), ']');

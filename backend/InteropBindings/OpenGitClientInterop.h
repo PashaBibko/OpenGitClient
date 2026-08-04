@@ -5,7 +5,7 @@
 using OpenGitClientMessageReceiverCallback = char* (*)(const char*, const char*);
 
 class OpenGitClientInterop {
-  public:
+public:
     // Static class, not meant to be created / destroyed
     OpenGitClientInterop() = delete;
     ~OpenGitClientInterop() = delete;
