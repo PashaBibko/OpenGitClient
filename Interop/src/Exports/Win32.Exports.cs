@@ -19,7 +19,7 @@ public static partial class InteropExports
                 .RegisterWebMessageReceivedHandler(MessageHandler.Handle)
                 .WaitForClose();
         });
-        
+
         t.SetApartmentState(ApartmentState.STA);
         t.Start();
         t.Join();
@@ -30,7 +30,7 @@ public static partial class InteropExports
     {
         string basePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         string fullPath = Path.Combine(basePath, "OpenGitClient");
-        
+
         Directory.CreateDirectory(fullPath); // Makes sure to create the dir before returning
         return Marshal.StringToHGlobalAnsi(fullPath);
     }

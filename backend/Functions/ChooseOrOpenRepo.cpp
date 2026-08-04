@@ -1,8 +1,8 @@
-﻿#include "WebFunctions.h"
+﻿#include <nfd.h>
 
 #include <string>
 
-#include <nfd.h>
+#include "WebFunctions.h"
 
 static std::optional<std::string> GetUserChosenPath(AppContext& ctx) {
     // Initializes NFD so it can open a native file explorer window
@@ -15,9 +15,10 @@ static std::optional<std::string> GetUserChosenPath(AppContext& ctx) {
     nfdchar_t* outPath = nullptr;
     std::string chosenPath;
 
-    if (const nfdresult_t rc = NFD_PickFolder(&outPath, nullptr); rc == NFD_OKAY) { // nullptr = no default location
+    if (const nfdresult_t rc = NFD_PickFolder(&outPath, nullptr);
+        rc == NFD_OKAY) {  // nullptr = no default location
         chosenPath = outPath;
-    } else if (rc != NFD_CANCEL) { // Doesn't class user canceling as failing
+    } else if (rc != NFD_CANCEL) {  // Doesn't class user canceling as failing
         ctx.LogError("NFD_PickFolder() failed [", NFD_GetError(), ']');
         return std::nullopt;
     }

@@ -11,16 +11,16 @@ std::vector<std::string> Repo::GetFileDiff::Invoke(AppContext& ctx, const std::s
     git_diff_options opts = GIT_DIFF_OPTIONS_INIT;
 
     std::string mutFilepath = filepath;
-    char* paths[] = { mutFilepath.data() };
-    opts.pathspec = git_strarray { .strings = paths, .count = 1 };
+    char* paths[] = {mutFilepath.data()};
+    opts.pathspec = git_strarray{.strings = paths, .count = 1};
 
     git_diff_tree_to_workdir_with_index(&diff, ctx.m_SelectedRepo, headTree, &opts);
     git_diff_num_deltas(diff);
 
-    git_patch *patch = nullptr;
+    git_patch* patch = nullptr;
     git_patch_from_diff(&patch, diff, 0);
 
-    git_buf buf = { .ptr = nullptr };
+    git_buf buf = {.ptr = nullptr};
     git_patch_to_buf(&buf, patch);
 
     std::stringstream stream(buf.ptr);

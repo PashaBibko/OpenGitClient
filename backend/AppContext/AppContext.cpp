@@ -1,8 +1,8 @@
 #include "AppContext.h"
 
-#include <glaze/glaze.hpp>
 #include <filesystem>
 #include <fstream>
+#include <glaze/glaze.hpp>
 #include <iostream>
 
 namespace fs = std::filesystem;
@@ -13,7 +13,7 @@ struct PersistentAppContextData {
     std::string LastOpenedRepository;
 };
 
-void AppContext::OutputLogMessage(const std::string &message) {
+void AppContext::OutputLogMessage(const std::string& message) {
     std::cout << message << std::endl;
 }
 
@@ -33,7 +33,8 @@ AppContext::AppContext(const std::string& appDataFolder)
     // software or if the user has deleted the appdata folder for the application
     const fs::path userDataPath = fs::path(m_AppDataFolder) / "userdata.json";
     if (!fs::exists(userDataPath)) {
-        return; // Can safely return with the class having default values as there is nothing to load
+        return;  // Can safely return with the class having default values as there is nothing to
+                 // load
     }
 
     std::ifstream userDataFile(userDataPath);
@@ -75,11 +76,14 @@ AppContext::~AppContext() {
         return;
     }
 
-    // Creates an object to hold the persistent data which is then serialized and written to the file
+    // Creates an object to hold the persistent data which is then serialized and written to the
+    // file
     std::string json{};
-    const glz::error_ctx ec = glz::write_json(PersistentAppContextData {
-        .LastOpenedRepository = m_LastOpenedRepository,
-    }, json);
+    const glz::error_ctx ec = glz::write_json(
+        PersistentAppContextData{
+            .LastOpenedRepository = m_LastOpenedRepository,
+        },
+        json);
 
     if (ec) {
         LogError("Failed to write json due to [", glz::format_error(ec), ']');

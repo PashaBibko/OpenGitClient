@@ -36,7 +36,8 @@ char* WebFunctionRouter::RouteInner(const char* funcName, const char* serialized
     return m_SharedBuffer;
 }
 
-std::optional<std::string> WebFunctionRouter::InvokeFunction(const std::string& funcName, const char* serialized) {
+std::optional<std::string> WebFunctionRouter::InvokeFunction(const std::string& funcName,
+                                                             const char* serialized) {
     if (const auto iter = m_Functions.find(funcName); iter != m_Functions.end()) {
         return iter->second->InvokeInner(m_AppContext, serialized);
     }

@@ -1,13 +1,14 @@
-#include "InteropBindings/OpenGitClientInterop.h"
 #include "AppContext/AppContextAccess.h"
-#include "Router/WebFunctionRouter.h"
-#include "Router/WebFunction.h"
 #include "Functions/WebFunctions.h"
+#include "InteropBindings/OpenGitClientInterop.h"
+#include "Router/WebFunction.h"
+#include "Router/WebFunctionRouter.h"
 
 int main() {
     // Sets up the web function router so the messages from the frontend call the correct functions
     const std::string appdataFolder = OpenGitClientInterop::GetAppDataDir();
-    static WebFunctionRouter router { appdataFolder }; // Has to be static to be passed into the callback
+    static WebFunctionRouter router{
+        appdataFolder};  // Has to be static to be passed into the callback
     router.m_AppContext.Log("Using app data folder: [", appdataFolder, ']');
 
     router.AddFunction<AppContextAccess::ExtLogError>("App.LogError");
@@ -22,5 +23,5 @@ int main() {
 
     // Binds the web function router before starting the main loop
     OpenGitClientInterop::BindMessageReceiverCallback(WebFunctionRouter::Route);
-    OpenGitClientInterop::StartPhotino(); // Blocks until window is closed
+    OpenGitClientInterop::StartPhotino();  // Blocks until window is closed
 }

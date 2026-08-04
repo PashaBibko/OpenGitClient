@@ -20,7 +20,7 @@ public static partial class InteropExports
     {
         string homePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         string fullPath = Path.Combine(homePath, "Library", "Application Support", "OpenGitClient");
-        
+
         Directory.CreateDirectory(fullPath); // Makes sure to create the dir before returning
         return Marshal.StringToHGlobalAnsi(fullPath);
     }
