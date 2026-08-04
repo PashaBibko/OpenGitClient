@@ -145,6 +145,8 @@ FetchContent_MakeAvailable(nfd)
 
 # Creates the C++ executable from the project source files
 add_executable(OpenGitClient
+        backend/AppContext/AppContext.cpp
+        backend/AppContext/AppContext.h
         backend/InteropBindings/Functions.h
         backend/InteropBindings/OpenGitClientInterop.cpp
         backend/InteropBindings/OpenGitClientInterop.h
@@ -157,9 +159,6 @@ add_executable(OpenGitClient
         backend/Logger/LoggerWebFunctions.h
         backend/Logger/Logger.h
         backend/Functions.h
-        backend/AppContext.h
-        backend/UserData.h
-        backend/UserData.cpp
         backend/main.cpp
 )
 

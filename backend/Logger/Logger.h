@@ -21,14 +21,6 @@ public:
 
     template<typename... Args>
         requires (LogableType<Args> && ...)
-    void Log(Args&&... args) {
-        std::stringstream ss;
-        (ss << ... << std::forward<Args>(args));
-        OutputLogMessage(ss.str());
-    }
-
-    template<typename... Args>
-        requires (LogableType<Args> && ...)
     void LogError(Args&&... args) {
         std::stringstream ss;
         (ss << ... << std::forward<Args>(args));

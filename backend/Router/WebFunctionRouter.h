@@ -6,20 +6,20 @@ class WebFunctionRouter final {
     static WebFunctionRouter* sInstance;
 
     std::unordered_map<std::string, std::unique_ptr<WebFunctionContainer>> m_Functions{};
-    AppContext m_AppContext;
-
     char* m_SharedBuffer = nullptr;
 
     std::optional<std::string> InvokeFunction(const std::string& name, const char* serialized);
     char* RouteInner(const char* funcName, const char* serialized);
 
 public:
+    AppContext m_AppContext;
+
     template<typename... Args>
     explicit WebFunctionRouter(Args&&... args) : m_AppContext(std::forward<Args>(args)...) {
         if (sInstance == nullptr) {
             sInstance = this;
         } else {
-            std::cout << "Multiple instances of web function router cannot coexist in one static context.\n";
+            m_AppContext.Log("Multiple instances of web function router cannot coexist in one static context.");
         }
     }
 

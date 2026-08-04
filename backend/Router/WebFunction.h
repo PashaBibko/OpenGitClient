@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-#include "../AppContext.h"
+#include "../AppContext/AppContext.h"
 
 template <typename Ty>
 concept JsonSupported = std::is_same_v<Ty, void> ||
@@ -47,7 +47,7 @@ public:
         if constexpr (std::is_void_v<InputTy>) {
             // Sends a warning if an object was provided
             if (json != nullptr) {
-                ctx.m_Logger.LogError("Input parameter was provided to a void web function");
+                ctx.LogError("Input parameter was provided to a void web function");
                 return std::nullopt;
             }
 
@@ -60,7 +60,7 @@ public:
 
                 std::string buffer{};
                 if (const glz::error_ctx ec = glz::write_json(output, buffer)) {
-                    std::cout << "ERROR: Failed to write json due to [" << glz::format_error(ec) << "]" << std::endl;
+                    ctx.LogError("Failed to write json due to [", glz::format_error(ec), ']');
                     return std::nullopt;
                 }
 
@@ -70,14 +70,14 @@ public:
         } else {
             // Checks there is an input object provided
             if (json == nullptr) {
-                std::cout << "ERROR: No input parameter was provided to a web function." << std::endl;
+                ctx.LogError("No input parameter was provided to a web function.");
                 return std::nullopt;
             }
 
             // Constructs the object from the JSON
             InputTy object{};
             if (const glz::error_ctx ec = glz::read_json(object, json)) {
-                std::cout << "ERROR: Failed to parse json due to [" << glz::format_error(ec) << "]" << std::endl;
+                ctx.LogError("Failed to parse json due to [", glz::format_error(ec), ']');
                 return std::nullopt;
             }
 
@@ -90,7 +90,7 @@ public:
 
                 std::string buffer{};
                 if (const glz::error_ctx ec = glz::write_json(output, buffer)) {
-                    std::cout << "ERROR: Failed to write json due to [" << glz::format_error(ec) << "]" << std::endl;
+                    ctx.LogError("Failed to write json due to [", glz::format_error(ec), ']');
                     return std::nullopt;
                 }
 

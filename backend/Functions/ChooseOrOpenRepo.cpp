@@ -4,10 +4,10 @@
 
 #include <nfd.h>
 
-static std::optional<std::string> GetUserChosenPath() {
+static std::optional<std::string> GetUserChosenPath(AppContext& ctx) {
     // Initializes NFD so it can open a native file explorer window
     if (NFD_Init() != NFD_OKAY) {
-        std::cout << "ERROR: NFD_Init() failed [" << NFD_GetError() << "\n";
+        ctx.LogError("NFD_Init() failed [", NFD_GetError(), ']');
         return std::nullopt;
     }
 
@@ -18,7 +18,7 @@ static std::optional<std::string> GetUserChosenPath() {
     if (const nfdresult_t rc = NFD_PickFolder(&outPath, nullptr); rc == NFD_OKAY) { // nullptr = no default location
         chosenPath = outPath;
     } else if (rc != NFD_CANCEL) { // Doesn't class user canceling as failing
-        std::cout << "ERROR: NFD_PickFolder() failed [" << NFD_GetError() << "]\n";
+        ctx.LogError("NFD_PickFolder() failed [", NFD_GetError(), ']');
         return std::nullopt;
     }
 
@@ -48,7 +48,7 @@ static Repo::ChooseResult TryDiscoverRepositoryAt(const std::string& path, AppCo
     git_buf repoPath = {.ptr = nullptr};
     if (git_repository_discover(&repoPath, path.c_str(), 0, nullptr) < 0) {
         const git_error* err = git_error_last();
-        std::cout << "No repo found: " << (err ? err->message : "unknown error") << "\n";
+        ctx.LogError("No repo found: ", err ? err->message : "unknown error");
 
         git_buf_dispose(&repoPath);
         return {.Filepath = path, .IsRepository = false};
@@ -65,15 +65,15 @@ static Repo::ChooseResult TryDiscoverRepositoryAt(const std::string& path, AppCo
     }
 
     // Stores the location in the app context before returning
-    ctx.m_UserData.m_LastOpenedRepository = repoLocation;
+    ctx.m_LastOpenedRepository = repoLocation;
     return {.Filepath = repoLocation, .IsRepository = true};
 }
 
 Repo::ChooseResult Repo::Choose::Invoke(AppContext& ctx) {
     // Gets the folder path chosen by the user
-    const std::optional chosenPath = GetUserChosenPath();
+    const std::optional chosenPath = GetUserChosenPath(ctx);
     if (chosenPath == std::nullopt) {
-        std::cout << "User chose not to select a folder";
+        ctx.Log("User chose not to select a folder");
         return {.Filepath = "", .IsRepository = false};
     }
 
@@ -84,7 +84,7 @@ Repo::ChooseResult Repo::Choose::Invoke(AppContext& ctx) {
 bool Repo::Open::Invoke(AppContext& ctx, const std::string& path) {
     git_repository* repo = nullptr;
     if (const int ec = git_repository_open(&repo, path.c_str()); ec == 0) {
-        ctx.m_UserData.m_LastOpenedRepository = path;
+        ctx.m_LastOpenedRepository = path;
         ctx.m_SelectedRepo = repo;
 
         return true;

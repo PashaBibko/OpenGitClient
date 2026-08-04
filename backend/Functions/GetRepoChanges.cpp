@@ -1,9 +1,9 @@
 #include "../Functions.h"
 
-static std::optional<git_status_list*> GetRepoFileStatus(const AppContext& ctx) {
+static std::optional<git_status_list*> GetRepoFileStatus(AppContext& ctx) {
     // Checks that there is an open repo
     if (ctx.m_SelectedRepo == nullptr) {
-        std::cout << "No repository open, could not find any changes.\n";
+        ctx.LogError("No repository open, could not find any changes.\n");
         return std::nullopt;
     }
 
@@ -17,7 +17,7 @@ static std::optional<git_status_list*> GetRepoFileStatus(const AppContext& ctx) 
 
     if (git_status_list_new(&statusList, ctx.m_SelectedRepo, &opts) < 0) {
         const git_error* err = git_error_last();
-        std::cout << "Failed to create status list: " << (err ? err->message : "unknown error") << "\n";
+        ctx.LogError("Failed to create status list: ", err ? err->message : "unknown error");
         return std::nullopt;
     }
 

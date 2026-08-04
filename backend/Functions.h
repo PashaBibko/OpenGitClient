@@ -3,13 +3,13 @@
 #include <string>
 
 #include "Router/WebFunction.h"
-#include "AppContext.h"
+#include "AppContext/AppContext.h"
 
 namespace User {
     class GetLastOpenedRepo final : public WebFunction<AppContext, void, std::string> {
     public:
         std::string Invoke(AppContext& ctx) override {
-            return ctx.m_UserData.m_LastOpenedRepository;
+            return ctx.m_LastOpenedRepository;
         }
     };
 } // namespace User

@@ -16,7 +16,7 @@ char* WebFunctionRouter::RouteInner(const char* funcName, const char* serialized
     if (const auto iter = m_Functions.find(funcName); iter != m_Functions.end()) {
         webFunctionResult = iter->second->InvokeInner(m_AppContext, serialized);
     } else {
-        std::cout << "ERROR: Failed to find [" << funcName << "] web function." << std::endl;
+        m_AppContext.LogError("Failed to find [", funcName, "] web function.");
     }
 
     // Returns early if the function had no result or could not be found
@@ -39,6 +39,6 @@ std::optional<std::string> WebFunctionRouter::InvokeFunction(const std::string& 
         return iter->second->InvokeInner(m_AppContext, serialized);
     }
 
-    std::cout << "ERROR: Failed to find [" << funcName << "] web function." << std::endl;
+    m_AppContext.LogError("Failed to find [", funcName, "] web function.");
     return std::nullopt;
 }
