@@ -4,6 +4,8 @@
 
 #include <iostream>
 
+#include "../AppContext.h"
+
 template <typename Ty>
 concept JsonSupported = std::is_same_v<Ty, void> ||
     (glz::write_supported<Ty, glz::JSON> && glz::read_supported<Ty, glz::JSON>);
@@ -28,20 +30,19 @@ struct WebFunction<AppContextTy, void, OutputTy> {
     virtual ~WebFunction() = default;
 };
 
-template<typename AppContextTy>
 class WebFunctionContainer {
 public:
-    virtual  std::optional<std::string> InvokeInner(AppContextTy& ctx, const char* json) = 0;
+    virtual  std::optional<std::string> InvokeInner(AppContext& ctx, const char* json) = 0;
     virtual ~WebFunctionContainer() = default;
 };
 
-template <typename AppContextTy, typename FunctionTy, typename InputTy = FunctionTy::InputType, typename OutputTy = FunctionTy::OutputType>
-    requires std::derived_from<FunctionTy, WebFunction<AppContextTy, InputTy, OutputTy>>
-class WebFunctionContainerImpl final : public WebFunctionContainer<AppContextTy> {
+template <typename FunctionTy, typename InputTy = FunctionTy::InputType, typename OutputTy = FunctionTy::OutputType>
+    requires std::derived_from<FunctionTy, WebFunction<AppContext, InputTy, OutputTy>>
+class WebFunctionContainerImpl final : public WebFunctionContainer {
     FunctionTy m_InnerFunction{};
 
 public:
-    std::optional<std::string> InvokeInner(AppContextTy& ctx, const char* json) override {
+    std::optional<std::string> InvokeInner(AppContext& ctx, const char* json) override {
         // Does not require any JSON conversion if it takes in void
         if constexpr (std::is_void_v<InputTy>) {
             // Sends a warning if an object was provided
